@@ -6,6 +6,7 @@ import type { Product } from "@/lib/commerce";
 
 export function ShopCard({ product }: { product: Product }) {
   const primaryShade = product.shades[0];
+
   return (
     <Link
       href={`/products/${product.slug}`}
@@ -36,9 +37,11 @@ export function ShopCard({ product }: { product: Product }) {
         <p className="font-display italic text-[28px] leading-[1.1] text-primary-fixed-dim">
           {formatKsh(product.price)}
         </p>
-        <p className="font-label-caps text-on-surface-variant mt-1">
-          {primaryShade.name}
-        </p>
+        {primaryShade && (
+          <p className="font-label-caps text-on-surface-variant mt-1">
+            {primaryShade.name}
+          </p>
+        )}
       </div>
     </Link>
   );

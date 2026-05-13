@@ -4,37 +4,12 @@ import {
   type ShopifyProductNode,
 } from "./shopify";
 
-/**
- * Unified commerce types.
- * Mirrored from the original mock data structure to ensure UI compatibility.
- */
-
-export const categories = [
-  "Sculpting Bodysuits",
-  "High-Waist Briefs",
-  "Seamless Bras",
-  "Second Skin Sets",
-] as const;
-
-export type Category = (typeof categories)[number];
-
-export const intensities: Intensity[] = ["Light", "Medium", "Maximum"];
-
-export const shadePalette = [
-  { name: "Deep Espresso", hex: "#3D2B1F" },
-  { name: "Terracotta", hex: "#C4622D" },
-  { name: "Warm Sand", hex: "#D4B8A0" },
-  { name: "Obsidian", hex: "#1C1C1A" },
-  { name: "Nude", hex: "#D4B8A0" },
-  { name: "Deep Mocha", hex: "#574330" },
-];
-
 export type Intensity = "Light" | "Medium" | "Maximum";
 export type Template = "signature" | "essentials";
 
 export interface Shade {
   name: string;
-  hex: string;
+  hex: string | null;
 }
 
 export interface ProductDetail {
@@ -58,7 +33,7 @@ export interface Product {
   price: number;
   image: string;
   alt: string;
-  intensity: Intensity;
+  intensity: Intensity | undefined;
   shades: Shade[];
   inStock: boolean;
   template: Template;
@@ -89,14 +64,12 @@ function mapShopifyProduct(node: ShopifyProductNode): Product {
     ),
   );
 
-  // Fallbacks for metafields
-  const intensity = (node.intensity?.value as Intensity) || "Medium";
+  const intensity = node.intensity?.value as Intensity | undefined;
   const template = (node.template?.value as Template) || "signature";
-  const eyebrow = node.eyebrow?.value || "FORMA Signature";
-  const narrativeHeadline = node.narrativeHeadline?.value || "";
-  const longDescription = node.longDescription?.value || "";
+  const eyebrow = node.eyebrow?.value ?? "";
+  const narrativeHeadline = node.narrativeHeadline?.value ?? "";
+  const longDescription = node.longDescription?.value ?? "";
 
-  // Extract shades from "Color" or "Shade" options
   const shadeOption = node.options.find(
     (opt) =>
       opt.name.toLowerCase() === "color" || opt.name.toLowerCase() === "shade",
@@ -104,8 +77,8 @@ function mapShopifyProduct(node: ShopifyProductNode): Product {
   const shades: Shade[] =
     shadeOption?.optionValues.map((v) => ({
       name: v.name,
-      hex: "#C6977E", // Default skin tone hex, could be mapped from a metafield or lookup table
-    })) || [];
+      hex: null,
+    })) ?? [];
 
   // Images: prefer product images over a single featuredImage fallback so the
   // gallery gets every uploaded asset.
@@ -118,12 +91,12 @@ function mapShopifyProduct(node: ShopifyProductNode): Product {
     id: node.id,
     slug: node.handle,
     name: node.title,
-    category: node.productType || "General",
+    category: node.productType || "",
     price: price,
     image: node.featuredImage?.url || images[0]?.src || "",
     alt: node.featuredImage?.altText || node.title,
     intensity: intensity,
-    shades: shades.length > 0 ? shades : [{ name: "Standard", hex: "#C6977E" }],
+    shades: shades,
     inStock: node.availableForSale,
     template: template,
     variants: node.variants.edges.map((edge) => ({
@@ -139,7 +112,7 @@ function mapShopifyProduct(node: ShopifyProductNode): Product {
         "",
       longDescription: longDescription || node.descriptionHtml,
       narrativeHeadline: narrativeHeadline,
-      sizes: sizes.length > 0 ? sizes : ["S", "M", "L", "XL"],
+      sizes: sizes,
       compareAtPrice: compareAtPrice,
       images: images,
     },

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { cn } from "@/lib/cn";
 import type { Shade } from "@/lib/commerce";
 
@@ -17,6 +16,7 @@ export function ColorSelector({
   onShadeChange?: (shade: Shade) => void;
   style?: Style;
 }) {
+  if (shades.length === 0) return null;
   const selected = selectedShade ?? shades[0];
 
   return (
@@ -27,9 +27,26 @@ export function ColorSelector({
           {selected.name}
         </span>
       </span>
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-wrap">
         {shades.map((shade) => {
           const active = shade.name === selected.name;
+          if (!shade.hex) {
+            return (
+              <button
+                key={shade.name}
+                type="button"
+                onClick={() => onShadeChange?.(shade)}
+                className={cn(
+                  "px-3 h-8 font-label-caps text-[10px] tracking-wider transition-colors",
+                  active
+                    ? "border border-on-surface text-on-surface"
+                    : "border border-outline-variant text-on-surface-variant hover:border-outline",
+                )}
+              >
+                {shade.name}
+              </button>
+            );
+          }
           if (style === "essentials") {
             return (
               <button

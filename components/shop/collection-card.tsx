@@ -35,16 +35,27 @@ export function CollectionCard({ product }: { product: Product }) {
             {formatKsh(product.price)}
           </span>
         </div>
-        <div className="flex gap-2 mt-1" aria-label="Available shades">
-          {product.shades.map((shade) => (
-            <span
-              key={shade.name}
-              title={shade.name}
-              className="w-4 h-4 rounded-full border border-outline/30"
-              style={{ backgroundColor: shade.hex }}
-            />
-          ))}
-        </div>
+        {product.shades.length > 0 && (
+          <div className="flex gap-2 mt-1" aria-label="Available shades">
+            {product.shades.map((shade) =>
+              shade.hex ? (
+                <span
+                  key={shade.name}
+                  title={shade.name}
+                  className="w-4 h-4 rounded-full border border-outline/30"
+                  style={{ backgroundColor: shade.hex }}
+                />
+              ) : (
+                <span
+                  key={shade.name}
+                  className="font-label-caps text-[10px] text-on-surface-variant"
+                >
+                  {shade.name}
+                </span>
+              ),
+            )}
+          </div>
+        )}
       </div>
     </article>
   );

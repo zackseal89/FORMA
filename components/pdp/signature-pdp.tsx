@@ -76,31 +76,33 @@ export function SignaturePdp({ product }: { product: Product }) {
               />
             )}
 
-            <ColorSelector 
-              shades={product.shades} 
+            <ColorSelector
+              shades={product.shades}
               selectedShade={selectedShade}
               onShadeChange={setSelectedShade}
             />
 
-            <div className="flex flex-col gap-stack-md">
-              <div className="flex justify-between items-center">
-                <span className="font-label-caps text-on-surface-variant">
-                  SIZE
-                </span>
-                <Link
-                  href="/size-guide"
-                  className="font-label-caps text-on-surface-variant underline underline-offset-4 hover:text-primary transition-colors"
-                >
-                  See the size guide
-                </Link>
+            {detail.sizes.length > 0 && (
+              <div className="flex flex-col gap-stack-md">
+                <div className="flex justify-between items-center">
+                  <span className="font-label-caps text-on-surface-variant">
+                    SIZE
+                  </span>
+                  <Link
+                    href="/size-guide"
+                    className="font-label-caps text-on-surface-variant underline underline-offset-4 hover:text-primary transition-colors"
+                  >
+                    See the size guide
+                  </Link>
+                </div>
+                <SizeSelector
+                  sizes={detail.sizes}
+                  selectedSize={selectedSize}
+                  onSizeChange={setSelectedSize}
+                  style="signature"
+                />
               </div>
-              <SizeSelector 
-                sizes={detail.sizes} 
-                selectedSize={selectedSize}
-                onSizeChange={setSelectedSize}
-                style="signature" 
-              />
-            </div>
+            )}
 
             <div className="flex flex-col gap-stack-md pt-4">
               <button 
@@ -146,16 +148,18 @@ export function SignaturePdp({ product }: { product: Product }) {
                 </div>
               )}
             </div>
-            <div className="order-1 md:order-2 relative aspect-square overflow-hidden bg-surface-container-high">
-              <Image
-                src={detail.images[0].src}
-                alt="Editorial silhouette accompanying the narrative."
-                fill
-                quality={92}
-                sizes="(min-width: 768px) 50vw, 100vw"
-                className="object-cover grayscale brightness-75"
-              />
-            </div>
+            {detail.images[0] && (
+              <div className="order-1 md:order-2 relative aspect-square overflow-hidden bg-surface-container-high">
+                <Image
+                  src={detail.images[0].src}
+                  alt="Editorial silhouette accompanying the narrative."
+                  fill
+                  quality={92}
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-cover grayscale brightness-75"
+                />
+              </div>
+            )}
           </div>
         </section>
       )}

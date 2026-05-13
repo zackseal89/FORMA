@@ -89,32 +89,34 @@ export function EssentialsPdp({
           )}
 
           <div className="flex flex-col gap-8">
-            <ColorSelector 
-              shades={product.shades} 
+            <ColorSelector
+              shades={product.shades}
               selectedShade={selectedShade}
               onShadeChange={setSelectedShade}
-              style="essentials" 
+              style="essentials"
             />
 
-            <div className="flex flex-col gap-4">
-              <div className="flex justify-between items-center">
-                <span className="font-label-caps text-on-surface">
-                  SELECT SIZE
-                </span>
-                <Link
-                  href="/size-guide"
-                  className="font-label-caps text-[10px] text-on-surface-variant border-b border-outline-variant hover:text-on-surface transition-colors"
-                >
-                  SIZE GUIDE
-                </Link>
+            {detail.sizes.length > 0 && (
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-between items-center">
+                  <span className="font-label-caps text-on-surface">
+                    SELECT SIZE
+                  </span>
+                  <Link
+                    href="/size-guide"
+                    className="font-label-caps text-[10px] text-on-surface-variant border-b border-outline-variant hover:text-on-surface transition-colors"
+                  >
+                    SIZE GUIDE
+                  </Link>
+                </div>
+                <SizeSelector
+                  sizes={detail.sizes}
+                  selectedSize={selectedSize}
+                  onSizeChange={setSelectedSize}
+                  style="essentials"
+                />
               </div>
-              <SizeSelector 
-                sizes={detail.sizes} 
-                selectedSize={selectedSize}
-                onSizeChange={setSelectedSize}
-                style="essentials" 
-              />
-            </div>
+            )}
           </div>
 
           <div className="flex flex-col gap-4">
@@ -145,6 +147,7 @@ export function EssentialsPdp({
         </section>
       </div>
 
+      {accessories.length > 0 && (
       <section className="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface-container-lowest">
         <div className="max-w-[var(--container-max)] mx-auto">
           <div className="flex justify-between items-end mb-16">
@@ -182,9 +185,11 @@ export function EssentialsPdp({
                   />
                 </Link>
                 <div className="flex flex-col gap-1">
-                  <span className="font-label-caps text-[10px] text-on-surface-variant">
-                    {item.category.toUpperCase()}
-                  </span>
+                  {item.category && (
+                    <span className="font-label-caps text-[10px] text-on-surface-variant">
+                      {item.category.toUpperCase()}
+                    </span>
+                  )}
                   <h3 className="font-sans text-[16px] text-on-surface">
                     <Link href={`/products/${item.slug}`} className="hover:text-primary">
                       {item.name}
@@ -199,6 +204,7 @@ export function EssentialsPdp({
           </div>
         </div>
       </section>
+      )}
     </>
   );
 }

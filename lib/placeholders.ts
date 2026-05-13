@@ -1,12 +1,10 @@
 /**
  * Stitch placeholder image URLs.
- * These are temporary `lh3.googleusercontent.com` URLs from the Stitch
- * design system. Replaced with real product photography before launch.
+ * Marketing-only assets that don't belong in Shopify. Product imagery is
+ * fetched from the Storefront API — do not add product placeholders here.
  *
- * Each URL is passed through `lh3()` which appends `=w<HD_WIDTH>-rw` —
- * googleusercontent's resize hint. This is the source resolution
- * Google delivers; next/image then derives device-appropriate variants
- * from that high-res source.
+ * `lh3()` appends `=w<HD_WIDTH>-rw` (googleusercontent's resize hint) so
+ * next/image derives device-appropriate variants from the high-res source.
  */
 
 const HD_WIDTH = 2400;
@@ -15,9 +13,6 @@ const lh3 = (id: string) =>
 
 export const PLACEHOLDERS = {
   homeHero: "/home_hero.png",
-  newArrival1: "/new_arrival_1.png",
-  newArrival2: "/fabric_detail.png",
-  newArrival3: "/studio_bts.png",
   ourStory: "/founder_portrait.png",
   bento: lh3(
     "AB6AXuD4a1bY63O0PPAKMlITvKr_SbsUvUwByMARUNOs60Mw2FZldZsdEPRx-tAecxnieOHJVTwJbAKgI1KsGvlWld7_BHFPwE1aVx_eZjhKLub176PHPzMwZ7L3d31J7uJbnu4gDlRTq8n2sGRMLzlIsmL9iIEmqmSdNvLPbarwvC_pT3LPLViDItaedlSzwznRDYEyEedD_unLup6euPFQp4H2kB_dkViXqEeF5vRwXb1R1osKaXH1sWQzdk0Ilq-YI6tQUyAcXg5GyQYY",
@@ -45,75 +40,6 @@ export const PLACEHOLDERS = {
   ),
   measureHips: lh3(
     "AB6AXuANLRWKqkf2E1-sH8kZrmYQ5Eu0bvEIh100vwJcsxmyzRIaEpWuAGbrxyzsYxwPDPeCVqJ_EhK3o7_eGveVRuNWvDdsIxDT9K4l6FtmtkMpwQDKO0i1axyve6FMy5fCYwT8oqOFUySrypNKsC2DTKkgcvkUbogJCWidXiFnFKggMdl2u1CxI3wxGxgnXDV07_1UyyXjCPRXsemwLKtpFolKkiglxAOywLVlveDMF5BgCFVixuLWVaFQp01CCPATJYd38U52SKzs4tPF",
-  ),
-  shop1: lh3(
-    "AB6AXuB5VNvV1sjCNsh6FREqIsNuiWJGZLBKQvzSahLl65BBv2PmO3ZvbA3jIXACo7S8dX0WY6iWfIfXu-7mSFzjs8vp4wieOb27Kj3MEg7Iw-ga6HLsXr4hDOItcnZGqLXppuYvKQSxCJ0To6-VzD93auxZvNR_oTOF_lcIKqWmOTK3qVPUaSDjIyU-zH3of_PoobCQ-4crXpffjak_p7IhI7B1kl4GnkNWUW8goNStaGHwZi2BvlWmtd1u_gt28XtJDPUZIAcRkQ08ydzd",
-  ),
-  shop2: lh3(
-    "AB6AXuDgCqvN5R70AVd3ALk4azMxikmJGIFUSvsHBRKI3AtFWgHa7XWPFsgEw9l4DuHQqSvKmIbf7uFSvFfkcBPpudIGuv270Fc8w2qE39CvijrLaUlR-Dm-5GrjPl0lngmJHMYCF2hts5euoZ5NPX8V3i46E_amafpv6uulmNjRMgNfljwwZKvHP_mg3rlXCRYT4NYk0UZLitOnE4y_ZoiyjpwdpZvsZGrO5STBubGd_qMOr68rbxmRylsT5E8epHxxGc38HBUpvZW5PXxc",
-  ),
-  shop3: lh3(
-    "AB6AXuBUBYZJed0oozfydsskRAUsUL1fvSDg8WU0RR1ifSK45ABAXjbhxIJdaeRZUQ4uXj-hLqBVZLtRegqo0ewx-nm6trCY8MvDhLyhxWHfLMpmEt0HgGFW7kuvbaiOaQGivS9kP0GU8vFUIahcJIZoEzxGqEyt7xrv9yweCrFunD0413ocoM6XakylWm6e1414rGKRTuL8y6KhuayrvzjKlh2gF3Tpj1_OtDY7cmFyrmm-4YEnzyScj4DKE1ZygOxjw9YfETmr2FVTqki0",
-  ),
-  shop4: lh3(
-    "AB6AXuCwQGEMAcfh9On1PE1qUXqCJpZuqqaiObB0Sx0ru_nfqB0rvVDpxUyqPDMWO7k_GqTjZdeiQ-yOF7ztXI9UnEV7pqlO9LFqP0D-LDv7-SzfWoC_jcE9oEWTqDPdX89w6FtXQKhhyCPk1vlQjEN2k8juNeQPYdOB_FnYsP5v8fUmDN1HFY3QuyI6i6-QjNhAQ-PrLXqDy9ARPkHMKDx3-ifdYKqbv-l6KLcxo9D8fXNXiAPnSchTdA0beHML286dylHjFFXuvCT0RDUL",
-  ),
-  shop5: lh3(
-    "AB6AXuDq0qn05cT_PC4lSJAdL5mMe0YJfvhQ42bS1waSxYZ8M4BFbTtwx_8GODF7wGG6F3exzLlUZZWFviyDDOgJDX8_dQvT7hlYMUwwLwqcYjToB5Un5sKyFzJpVtn0PvAtbfQrS0SwJ2m5RztZ8RyR1Eq4v806-Dmx0QnNea-0n4anX8XybHv-6RmYlbaLeccPzDIXz-hgXErRBICTwCu4-ez47PXX2ClmIrSA_bAcUDdD3vU6s7UlbwCx897AntYHAT_vj4n4Qcy7DYi2",
-  ),
-  shop6: lh3(
-    "AB6AXuBawmqI5o8pNxr9MhX_O4OvU7fDBEfPODWzJ8xIoXXJ9Br2gXKWnYhQTYlESBoFlVGdBL_VDDj6jdcuHQNjvSDLSlCN_xxL6mYpUcBN3QYWovoAgcXIYJqUF2qNPNPHvylh90N2APmlgcRouThKo3CpZwg0rLDkPUch8si0zalFuzkE2atAjGqRbsnATpyf-l7kNT3ZK3CxFZ44RGP2rJRvms20llImH9ECAogjyY3LvtNbnUADJnWbAF73f26kz8oUcRTh7yT9OfS7",
-  ),
-  collection1: lh3(
-    "AB6AXuBkNjab3GzkaZsCwuo5pT-yoTYYLLz7TcJT8oo224ucN_DvyolshYthvr-4YFT4xYYuURLId3wfgB3ORH0exKZLUejOoYO4OBFaqXra_YSCrQGk1oocCY2EWWkVoVzhAYOCXZQkPs5iQY-em05ch5eAUPq4XKODHd2D2IuyNsw8tp68Af4i0UQRmhvbQSx2er2IYcTNzygROTr_HwmnCIMTQY2QgWPsBkfnzyKn7BrVa7dgSx4wTAMuEjnj1jKiGcDlunyB5o9DshVP",
-  ),
-  collection2: lh3(
-    "AB6AXuDn_ML0Pg5VSn4OflgDtdlL4aNayRbaAaPuhcy5e8YHxxZGOIH2onTJsdnfwaDNtrC2k0r-lbA82wAsjPgs51aF-teOit-nnwgwuYiDbrkJGkmLVn0XQXBQOY4pwKhXayllP706_nCw5YQ-83y3Ify_BHMT-gA6xJyiLjRCBcQaw46AX2MWi9xWpUk6PbMqjPmDgQhyF5YyRprTAS6Hpi-rtj_ufIkVEc-Feq0bcqFf3JlQN78ycHAPxE9DVz7smruCVRjg1DK6zWoo",
-  ),
-  collection3: lh3(
-    "AB6AXuDZrUt12Am324A5tQzs2fwOCnTiFV6creSW7oIvNbRHO1HmeQkrA6pPTk1lweRBWZNCoQlOak2ioqwn5_m_-GEWvufRjwsh8cEgs1fWJmIctPh8rAsqM-GKf_AdxwnM0mB3DHubj9f3wa6oIX1HV5fCFIuJSscHmj09kmnidTbZ-q2Bi70TDo0SAcpjzoJITnjR-W6dlWdVknWgd0lE7RZCxmKIdzfl6BK46Cvy7-I9gr9aAyZc3PD309buOl4r572b0WQ_IeStgFcl",
-  ),
-  collection4: lh3(
-    "AB6AXuBsW5CtU3LL-E6OuYTa7NPT1Qz7RtzdqXsyOyxH6k8rKWIA7O4UBEW5E6QeWEDz-_pIROrhH8tdYDk7Ya41bIzTb6RJC36uFMqsgv2x58ruiyhLDFKX4DE7WJ-IPuc7YpDMD6pSR1487zBsFGJoZzxYVJUn3mdMx20J5clBRxyAXQtmE0JZUjEHgc9wsFQ3yc3ifLO-NfJy3Yu2Fgk-8AK07Sj9ep5AoPi_ut1LIizuke8dMD0HGVHZsf26Zi8fYU9K7-xBYKAAEMoR",
-  ),
-  // Sculpt PDP (signature template)
-  sculptHero: lh3(
-    "AB6AXuBGd51nEv4BLmIfCX6DkvebinJFT8LXXtPnOfv3XZ7p_QkV8dhrLRh3orbyhXLpg5Mou_NOor8aHijTacIdpKMDxgor3pO0NbclMiV5_kaIFN2qV-ohr5srJeEYv7DmbTJ4LM4LeBW_wcJOp1-REMVkwY4tC0FjqWQFxQ2lEC-PB-8n9j01HTASWuXlXsbaiAVncamnJtbXhalNIJnTZOIietEwL4xTaeGdGDdC5jRQpHv9JK0QKGyIlNGh2UHMewvB_lUXQlhorF2D",
-  ),
-  sculptThumb1: lh3(
-    "AB6AXuCP5oj6KennkJcohtZe978aFCT49x6hW0UgTBSo3OStGbAS1jBTmGzNDHmB48khd38XOV8H86n6LGRFRQxHNLP_1_5gLzwdv88a-Iuh6TKGrV7ookHyXPUowpjHXK3Wi6uNXctCsA1eVYczYAALt8nZOzehR2fd7bD7FeWX2y7fMR_YT-J6TjY8jOL_WDvzoQt-6_vRnAisrnRBj37esNjcHkbMk9thaBh55HT5L6m3aihQiceCkIH1YBqGlnigg5YadmUOf3Rkwa19",
-  ),
-  sculptThumb2: lh3(
-    "AB6AXuBHS1w7LcCGrCTZ9MDcbGdmyYIqlvr7KEmN-rEAPD-BA1q_T3pil53QHaI07QEpiithz0ROnQJXiwuakljaXFgsO_vVy54k-AjCVK1q34FXvO31Q4a_fl5QiEea0gUAed4iHVmRCYizoVzzc0sLeYzKHCYwAeLhBDXcnFEEVv3zVnJEbYGeF0X-kOYkpfMBkvPAGCvPMqHJBJ1N2nC-8rr1FcGkaS1O6mvgJ6LSPWv8h4S5X7WZTsrqewS37vTRgOUUWwyoNErBxbpD",
-  ),
-  sculptThumb3: lh3(
-    "AB6AXuDEpECwq17HZRzfA9rVkQ6pfTq2-saRNVf6BkLK6HrRe_xi7U-VBmZHBMuCNQc9EpkWGPUhhSeYyqVL6V4p4hftgsLQub7KOZswY87uTgLhQ9hxqM90Uwyx0Aa4hIlABvcbFoLxR-W_-jY24TD5yQI5YgY5CsGaIvLuoeMrJRy0DNVQkrC9pDUqB0JJ06Nai-Fho6DGSEBi2K3GA82RvzJTQCyk_tmf4kd9IBLByx40BzDkRP3SwtbN6N-LuUmQ4O9gmTztwGgh0o-S",
-  ),
-  sculptNarrative: lh3(
-    "AB6AXuBvfjTFd7hgnMAhddE_-HvPwfzHySCjwMnC1uQ-66mByExUeWQlkjyZTwJi7PyyXH4p9Qhjs-c5MzoxZxe8mntSKn2ZIg8bfoomIe7q_maVuiMDiBwrD2ofuYgu1HdYhE-RSpwUaHbowDZ-0ZeQ-eExBPAxnroHaTcWq1JM20rHV53jf4Jtu0AWa8tDbDQ_Z_vWHQ10W_4Cx1oxlGSqB-vWVT98d82mXvGHsV6QCxbrPLfMBUVwGIn6k6YsyphTSQ8U1uudCNNENHhJ",
-  ),
-  // Essential PDP (essentials template)
-  essentialHero: lh3(
-    "AB6AXuCMNabEkKMiuANHpy9FUZhGCR5MIV01vojEEqywMwIUwv4CuJcKfnfiT5P8DvX8KVrk5pDhXHOBkL3udL_YhBo2lDfOAekQ7-7OSitQLlq_dpPsfN-jLTBgDS80NgIhoKPE-XskJKUnRkSsfzjRfdv6L4uacHLINXiJkgbjXYdJLACARvAA8vMF6wV-jmn-dOlyRTOalf5lEV2ttWYXnNVx90fiYwmm9bT5Dta6Vj49qMxTWBf6jRVuUTgLkRNrqIcFKZGeY0XMp-Q8",
-  ),
-  essentialDetail: lh3(
-    "AB6AXuDo2R9azPj9_add7GrKxegQoRJd5Tyrl3ChnuEKmvsFk631RJYs6kn8jg9hyukIR5mZfW0EzBYD2ukTzvFfpuzVDIRUmSFnqLR8qCAd1KWfeK2oiIw0OL-r6SQ2tNIEDQiCqV5i3LPDJnHf0m5MQfk_2KObkCiDU5JE5DXyxuFtmMxmjT-NEawDqA4W74mini5lAI2CucLB7KQYvQDQkd-Tn4ANBZMUUXY3f15vWBbfuRL8dzkuXzqb3vd5cNuvbsSwY_4Pu4OEZvfV",
-  ),
-  essentialLifestyle: lh3(
-    "AB6AXuBCwxx_-UHCgJqPreMqvZLtskFOxDlGakNy5_8LBynhndrAESuNmRJ059o5CkTFuHwJAz5Li9l71tRWyu-f8vpw7mqtYq6Vqf_D0Kzs32cXrTF4sVZzwkRZhxc9wQS2JPqTWWnPmOmBdgoKWky_zrQ6EB0MLG6--JErW1z_ndNHpNC0Cwi2Kwhf6BzLCxrMUMsYkdhvjMyeFTsWdasrk7qFiob4GRZ-_7I08nvtZsqDqmKd8J_yO0LWlVp61L8ho01DkJW12CrFLAII",
-  ),
-  // Complete-the-look accessories
-  pairsPant: lh3(
-    "AB6AXuDAD3FbB_Bbl9Dj6bWV5X_zLz_6IkXsjP3Sh3kEV2c6RXWmDyU44H8XyI5pUWShd7v-pY9zI6QxjlvFNz9g_8bSFw9YyfULD_kfxe5pHG7xpOxDDEC7bwG63BlwWfXIhz59lgi416Ti9hPFUsKicTi3a2l3JzFEtvqxD0-3ksCccZieKAx3l2SnJdIPhVqmq4zcHlwAj2f6L7LEbPeyfT8WVqtLTtCVGUUadFPrIEVFw7qRq4g7wTTWp-xrpPkSd3gjswvz0A9qUr1N",
-  ),
-  pairsBlazer: lh3(
-    "AB6AXuCO-xz3rYmF0Tpkq29I8-EB3pV4CPxs8uxFsdLPIVwyHQtlUCcYLNBnpGufg7jVhAqn7zkZCVaXIJPRLY1j5cU7JFE5L0hxVE4jmMsZs5GWorfHdTjR_gvwExgOuatv_WG396d9LlXNxq9zUieav9pWpn28-m6HdVwzDk_vdapykKZd6Y8XjKlxAkV_q4MXT6uQJzz6LWOzJZ_e2nfO10Pv1mPPKoozoxWPHw_N7DcXllF8O_rmmcx-LL1SxcueE1lbBbhJQGVwoE9y",
-  ),
-  pairsMule: lh3(
-    "AB6AXuBLc5XZdChqVyQ97H7L9397rmv_8h1SmT-RVsq31nhPit0N4HxcBig-GrXQcGbFolog5eYr81Z3Oce9jIgw5pmjDtcQYhdNmfwgwdDZiMUpVQc83p48tvxAxDJnxCat_HB05UXlKE0Oha-8qn0nZMBwh_NWLLDV_iGB5WY8c2NJVzPYRQ0yMeAwwLPuZsoxx5detVQOp_4mdDra1k8RSK7Hm_X-VgoApur618-PP_op-bswkfZMeLjJb7DCYB18ZMyYbNcKCaIg3LIo",
-  ),
-  pairsTote: lh3(
-    "AB6AXuAGbw9Sx8lQM9Fev2hSMfDOP72NRnEVUaCLX34EmE_6q4OgSwSV7iYh1dbYa7C2YsTL_sFdbvih6ZrNf0txj1x6tWWP97ZNKrkOlGSKbqNJnON1AYA2qu2sB40TuMGR9pM4MADO4xXi7bFDlBLSv9stxjaN1dCFOmRRVzwiCoB0IQzlYxKr1m-jTvB_aIeIdaneenUz00DX8_I0OIWpSdIhNDwQXnQlYs1NYHvygMHh5zIIrbYkJlcYv4DVPzNj7mTj2SlsGgoL3_aa",
   ),
 } as const;
 

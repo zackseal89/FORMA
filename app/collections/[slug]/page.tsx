@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
-  categories,
   getProducts,
   getProductsByCategory,
   getProductsByCollectionHandle,
@@ -68,18 +67,15 @@ export default async function CollectionPage({
   if (!collection) notFound();
 
   // Prefer a real Shopify collection matching the slug. Fall back to category
-  // filtering (for slugs like `sculpting-bodysuits`), then to the full catalog
-  // for editorial slugs (`new-arrivals`, `best-sellers`, `the-edit`) that
-  // shouldn't read as empty when the Shopify collection isn't set up yet.
-  const matchedCategory = categories.find(
-    (c) => c.toLowerCase().replace(/\s+/g, "-") === slug,
-  );
+  // filtering using the slug's title-cased form. Editorial slugs without a
+  // matching Shopify collection fall through to the full catalog.
+  const slugAsCategory = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
   let items = await getProductsByCollectionHandle(slug);
-  if (items.length === 0 && matchedCategory) {
-    items = await getProductsByCategory(matchedCategory);
+  if (items.length === 0) {
+    items = await getProductsByCategory(slugAsCategory);
   }
-  if (items.length === 0 && !matchedCategory) {
+  if (items.length === 0) {
     items = await getProducts();
   }
 
