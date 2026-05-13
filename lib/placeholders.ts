@@ -14,21 +14,11 @@ const lh3 = (id: string) =>
   `https://lh3.googleusercontent.com/aida-public/${id}=w${HD_WIDTH}-rw`;
 
 export const PLACEHOLDERS = {
-  homeHero: lh3(
-    "AB6AXuB9Zdbm4DI-hXK8gjTTkJgkRv-vrmcOylzT_rqC257JpHlLUhCmY_PCqHj4hWbedYfkJLTXL-ScHKDUw7ImTu4out88CMteQ3RrVriLtK2ElCtMf-2qYFchVXXhEWmCCwkfNnxNUY47LVOZgkEaR-P6_1a0_wIxZSLfhgRI63oaYqdLVpE3-xCO7wo4dkx8mLslf2bP97Qqa3r_4EeHYRfldSe2LZi2cx3eKs3Oq3-kZgp2r5ihp-YbWbNHdxDWJiAG7zC_XOm05ste",
-  ),
-  newArrival1: lh3(
-    "AB6AXuCxo9aIoCufeBs9kRZP_vTTSL7lglAWV8pw58-xYe1NkBLuVGB5UYqiV-3HFvJ-wLjT8-yzoIGkRp2VIw4lAXc4Re2zbrucyY_sVNCqJh9W2FsFBKXwFNySR1IFjPws4c3oW_TFCI9-sipD_yNIjpxfTD6SqIi5yu-qQseaksXnJtvGKc8ys39DPTcPYg0YLW3Utf0xTZTtco2yMjXlb4_rwvgrSSqYDko21MVumL47LwXzShXz59LRC_aX1oLQkMxVaebrXRTEnse7",
-  ),
-  newArrival2: lh3(
-    "AB6AXuB_6Z2d6ScwVkwy0odWhoOgO_2uM4HRKGezTNUj5aHMm6O4r3kX8rZc6b17-i4aEAJS2ETjWyK7ueTWsVT7kxfod618bF5C7hDgp0IAHDwTLKsqu6Np3ftyCsvgDpKUHkfPDVoJ0GvDORDxRqdtW7ruO9RzoFiLSttGBuwPAk8ENHgFx1ukUWerE3pxn5n4eCzKYIBcVlj92qlyDE2szZyc1xiAmoBsqhyT5XA3SGAsrhv6i7xu6mVYs78WNEOt29Ca-m5vZmZcgAvM",
-  ),
-  newArrival3: lh3(
-    "AB6AXuBGZrY7flcuY_7P-_lK0oda_5WO70fjuL9HcOi67YUqIQUXIanf1Kbq78-JD_h-B6G1fpfOgPoaOtyW0SeNekuOGuRoF4B0xmjNZzYYSP27D1HvJGdlbjKvCmGYbbXaXmRFN7FKoQWcBcCW6b7o83QeEmVOmDCuujHbMIDQQlbXAmh5n_hN_Efwe1CnEX0u5NevpF2row3MY4DaFd6D5dvKT5UddqeptoY7wUB8Rx2Qx0rRVuBfhw5TMt0wrZ8YggwNkCIf_jFfeaaa",
-  ),
-  ourStory: lh3(
-    "AB6AXuDi6ElQ_yqHD9j_45cqbcyBknZmoD-Rp8jCL6N-UpLvruEJNDoFQz0-uaOdUe0Pixccadw_A5TUuoVgZ6ulqPux7RY9068OBPOqnjXXCrjWvylvtL0F0-FESGkXjPjQotUWZCdf78ounYXRCkXmLay1mL5aKL7C3vkAF17yTZx25d6tMfYruxaM7aJ_FcvJJVqthpjz5qfZrCtJiApdOJhAYXp7cjbT7R1tbZjjMGLZQGvk46sb_ANTzSzmehUIo9Z-CV-LHcFjkv-n",
-  ),
+  homeHero: "/home_hero.png",
+  newArrival1: "/new_arrival_1.png",
+  newArrival2: "/fabric_detail.png",
+  newArrival3: "/studio_bts.png",
+  ourStory: "/founder_portrait.png",
   bento: lh3(
     "AB6AXuD4a1bY63O0PPAKMlITvKr_SbsUvUwByMARUNOs60Mw2FZldZsdEPRx-tAecxnieOHJVTwJbAKgI1KsGvlWld7_BHFPwE1aVx_eZjhKLub176PHPzMwZ7L3d31J7uJbnu4gDlRTq8n2sGRMLzlIsmL9iIEmqmSdNvLPbarwvC_pT3LPLViDItaedlSzwznRDYEyEedD_unLup6euPFQp4H2kB_dkViXqEeF5vRwXb1R1osKaXH1sWQzdk0Ilq-YI6tQUyAcXg5GyQYY",
   ),
