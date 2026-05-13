@@ -1,4 +1,8 @@
-import { shopifyFetch, PRODUCT_FRAGMENT } from "./shopify";
+import {
+  shopifyFetch,
+  PRODUCT_FRAGMENT,
+  type ShopifyProductNode,
+} from "./shopify";
 
 /**
  * Unified commerce types.
@@ -64,21 +68,26 @@ export interface Product {
 
 // --- Shopify Mapping Logic ---
 
-function mapShopifyProduct(node: any): Product {
+function mapShopifyProduct(node: ShopifyProductNode): Product {
   const price = parseFloat(node.priceRange.minVariantPrice.amount);
-  const compareAtPrice = node.variants.edges[0]?.node.compareAtPrice
-    ? parseFloat(node.variants.edges[0].node.compareAtPrice.amount)
-    : undefined;
+
+  // Use the aggregate range so sales show even when only some variants are
+  // discounted. Shopify returns "0.0" when no compare-at is set; treat that
+  // as "no sale" rather than a fake 0-priced compare value.
+  const compareAtMax = parseFloat(
+    node.compareAtPriceRange.maxVariantPrice.amount,
+  );
+  const compareAtPrice = compareAtMax > price ? compareAtMax : undefined;
 
   // Extract sizes from variants
   const sizes = Array.from(
     new Set(
       node.variants.edges
-        .flatMap((edge: any) => edge.node.selectedOptions)
-        .filter((opt: any) => opt.name.toLowerCase() === "size")
-        .map((opt: any) => opt.value),
+        .flatMap((edge) => edge.node.selectedOptions)
+        .filter((opt) => opt.name.toLowerCase() === "size")
+        .map((opt) => opt.value),
     ),
-  ) as string[];
+  );
 
   // Fallbacks for metafields
   const intensity = (node.intensity?.value as Intensity) || "Medium";
@@ -88,14 +97,22 @@ function mapShopifyProduct(node: any): Product {
   const longDescription = node.longDescription?.value || "";
 
   // Extract shades from "Color" or "Shade" options
-  const shadeOption = node.options?.find(
-    (opt: any) => opt.name.toLowerCase() === "color" || opt.name.toLowerCase() === "shade",
+  const shadeOption = node.options.find(
+    (opt) =>
+      opt.name.toLowerCase() === "color" || opt.name.toLowerCase() === "shade",
   );
   const shades: Shade[] =
-    shadeOption?.values.map((val: string) => ({
-      name: val,
+    shadeOption?.optionValues.map((v) => ({
+      name: v.name,
       hex: "#C6977E", // Default skin tone hex, could be mapped from a metafield or lookup table
     })) || [];
+
+  // Images: prefer product images over a single featuredImage fallback so the
+  // gallery gets every uploaded asset.
+  const images = node.images.edges.map((edge) => ({
+    src: edge.node.url,
+    alt: edge.node.altText || node.title,
+  }));
 
   return {
     id: node.id,
@@ -103,28 +120,28 @@ function mapShopifyProduct(node: any): Product {
     name: node.title,
     category: node.productType || "General",
     price: price,
-    image: node.featuredImage?.url || "",
+    image: node.featuredImage?.url || images[0]?.src || "",
     alt: node.featuredImage?.altText || node.title,
     intensity: intensity,
     shades: shades.length > 0 ? shades : [{ name: "Standard", hex: "#C6977E" }],
     inStock: node.availableForSale,
     template: template,
-    variants: node.variants.edges.map((edge: any) => ({
+    variants: node.variants.edges.map((edge) => ({
       id: edge.node.id,
       title: edge.node.title,
       selectedOptions: edge.node.selectedOptions,
     })),
     detail: {
       eyebrow: eyebrow,
-      shortDescription: node.descriptionHtml?.replace(/<[^>]*>/g, "").slice(0, 200) || "",
+      shortDescription:
+        node.seo.description ||
+        node.descriptionHtml?.replace(/<[^>]*>/g, "").slice(0, 200) ||
+        "",
       longDescription: longDescription || node.descriptionHtml,
       narrativeHeadline: narrativeHeadline,
       sizes: sizes.length > 0 ? sizes : ["S", "M", "L", "XL"],
       compareAtPrice: compareAtPrice,
-      images: node.images.edges.map((edge: any) => ({
-        src: edge.node.url,
-        alt: edge.node.altText || node.title,
-      })),
+      images: images,
     },
   };
 }

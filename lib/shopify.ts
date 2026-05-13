@@ -137,15 +137,51 @@ export const IMAGE_FRAGMENT = /* GraphQL */ `
   }
 `;
 
+// PRODUCT_FRAGMENT is the canonical product shape across this app.
+//
+// Rules:
+// 1. Every field consumed by mapShopifyProduct MUST be in this fragment.
+//    The ShopifyProductNode type below mirrors the fragment 1:1 so the
+//    compiler catches drift — that is what caused the empty `options`,
+//    `compareAtPrice`, and silent fallback behaviour.
+// 2. Don't add fields that require extra access scopes without first
+//    enabling the scope in Shopify Admin → Headless. Confirmed gated:
+//      - `totalInventory` (Product)
+//      - `quantityAvailable` (ProductVariant)
+//    Both need `unauthenticated_read_product_inventory`. Until then, treat
+//    `inStock` as `availableForSale` only.
+// 3. Image arrays default to 20. Bump if any product genuinely exceeds it,
+//    but keep parity here and in the type below.
+// 4. Prefer aggregates (`compareAtPriceRange`, `priceRange`) over reading
+//    a single variant. Sale display should reflect the full variant set.
+//
+// Reference: https://shopify.dev/docs/api/storefront/latest/objects/Product
 export const PRODUCT_FRAGMENT = /* GraphQL */ `
   fragment product on Product {
     id
-    title
     handle
-    descriptionHtml
+    title
+    vendor
     productType
+    tags
+    descriptionHtml
     availableForSale
+    requiresSellingPlan
+    seo {
+      title
+      description
+    }
     priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    compareAtPriceRange {
       minVariantPrice {
         amount
         currencyCode
@@ -158,7 +194,7 @@ export const PRODUCT_FRAGMENT = /* GraphQL */ `
     featuredImage {
       ...image
     }
-    images(first: 10) {
+    images(first: 20) {
       edges {
         node {
           ...image
@@ -166,15 +202,20 @@ export const PRODUCT_FRAGMENT = /* GraphQL */ `
       }
     }
     options {
+      id
       name
-      values
+      optionValues {
+        name
+      }
     }
     variants(first: 50) {
       edges {
         node {
           id
           title
+          sku
           availableForSale
+          currentlyNotInStock
           price {
             amount
             currencyCode
@@ -186,6 +227,9 @@ export const PRODUCT_FRAGMENT = /* GraphQL */ `
           selectedOptions {
             name
             value
+          }
+          image {
+            ...image
           }
         }
       }
@@ -209,6 +253,73 @@ export const PRODUCT_FRAGMENT = /* GraphQL */ `
   }
   ${IMAGE_FRAGMENT}
 `;
+
+// --- Typed payload for PRODUCT_FRAGMENT ---
+// Mirrors the fragment exactly. mapShopifyProduct in lib/commerce.ts takes
+// this type as input, so the compiler will flag missing fields if either
+// drifts.
+export interface ShopifyMoney {
+  amount: string;
+  currencyCode: string;
+}
+
+export interface ShopifyImage {
+  url: string;
+  altText: string | null;
+  width: number | null;
+  height: number | null;
+}
+
+export interface ShopifyMoneyRange {
+  minVariantPrice: ShopifyMoney;
+  maxVariantPrice: ShopifyMoney;
+}
+
+export interface ShopifyProductOption {
+  id: string;
+  name: string;
+  optionValues: { name: string }[];
+}
+
+export interface ShopifyProductVariant {
+  id: string;
+  title: string;
+  sku: string | null;
+  availableForSale: boolean;
+  currentlyNotInStock: boolean;
+  price: ShopifyMoney;
+  compareAtPrice: ShopifyMoney | null;
+  selectedOptions: { name: string; value: string }[];
+  image: ShopifyImage | null;
+}
+
+export interface ShopifyMetafield {
+  value: string;
+}
+
+export interface ShopifyProductNode {
+  id: string;
+  handle: string;
+  title: string;
+  vendor: string;
+  productType: string;
+  tags: string[];
+  descriptionHtml: string;
+  availableForSale: boolean;
+  requiresSellingPlan: boolean;
+  seo: { title: string | null; description: string | null };
+  priceRange: ShopifyMoneyRange;
+  compareAtPriceRange: ShopifyMoneyRange;
+  featuredImage: ShopifyImage | null;
+  images: { edges: { node: ShopifyImage }[] };
+  options: ShopifyProductOption[];
+  variants: { edges: { node: ShopifyProductVariant }[] };
+  intensity: ShopifyMetafield | null;
+  template: ShopifyMetafield | null;
+  eyebrow: ShopifyMetafield | null;
+  narrativeHeadline: ShopifyMetafield | null;
+  longDescription: ShopifyMetafield | null;
+}
 
 // --- Cart Fragments ---
 export const CART_FRAGMENT = /* GraphQL */ `
