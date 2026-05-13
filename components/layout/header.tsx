@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useCart } from "@/components/cart/cart-context";
 
 const nav = [
   { label: "Collections", href: "/shop" },
@@ -8,6 +11,9 @@ const nav = [
 ];
 
 export function Header() {
+  const { openCart, cart } = useCart();
+  const totalItems = cart?.totalQuantity || 0;
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-20 glass-bar">
       <div className="h-full px-margin-mobile md:px-margin-desktop flex items-center justify-between">
@@ -39,9 +45,15 @@ export function Header() {
           </button>
           <button
             aria-label="Cart"
-            className="text-on-background hover:text-primary transition-colors"
+            onClick={openCart}
+            className="text-on-background hover:text-primary transition-colors relative"
           >
             <BagIcon />
+            {totalItems > 0 && (
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-white text-[10px] flex items-center justify-center rounded-full font-bold">
+                {totalItems}
+              </span>
+            )}
           </button>
           <button
             aria-label="Open menu"

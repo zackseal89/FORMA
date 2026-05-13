@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { products } from "@/data/products";
+import { getProducts } from "@/lib/commerce";
+import type { Product } from "@/lib/commerce";
 import { resolveShopVariant } from "@/lib/config";
 import { SidebarFilters } from "@/components/shop/sidebar-filters";
 import { ShopCard } from "@/components/shop/shop-card";
@@ -21,6 +22,7 @@ export default async function ShopPage({
 }) {
   const { variant: variantParam } = await searchParams;
   const variant = resolveShopVariant(variantParam);
+  const products = await getProducts();
 
   return (
     <div className="pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop max-w-[var(--container-max)] mx-auto">
@@ -38,16 +40,25 @@ export default async function ShopPage({
         <VariantToggle active={variant} />
       </header>
 
-      {variant === "sidebar" ? (
-        <SidebarLayout />
+      {products.length === 0 ? (
+        <div className="py-24 text-center">
+          <p className="font-display italic text-[24px] text-on-surface-variant">
+            Our inventory is currently being curated.
+          </p>
+          <p className="font-sans text-[16px] text-on-surface-variant/70 mt-4">
+            Check back soon for our latest silhouettes.
+          </p>
+        </div>
+      ) : variant === "sidebar" ? (
+        <SidebarLayout products={products} />
       ) : (
-        <EditorialLayout />
+        <EditorialLayout products={products} />
       )}
     </div>
   );
 }
 
-function SidebarLayout() {
+function SidebarLayout({ products }: { products: Product[] }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter items-start">
       <SidebarFilters />
@@ -63,7 +74,7 @@ function SidebarLayout() {
   );
 }
 
-function EditorialLayout() {
+function EditorialLayout({ products }: { products: Product[] }) {
   const pillOptions = [
     { label: "All", href: "/shop?variant=editorial" },
     { label: "Bodysuits", href: "/shop?variant=editorial&filter=bodysuits" },

@@ -7,20 +7,20 @@ type Style = "signature" | "essentials";
 
 interface SizeSelectorProps {
   sizes: string[];
-  defaultSize?: string;
+  selectedSize?: string | null;
+  onSizeChange?: (size: string) => void;
   style?: Style;
   columns?: number;
 }
 
 export function SizeSelector({
   sizes,
-  defaultSize,
+  selectedSize,
+  onSizeChange,
   style = "signature",
   columns,
 }: SizeSelectorProps) {
-  const [selected, setSelected] = useState<string | null>(
-    defaultSize ?? sizes[1] ?? sizes[0] ?? null,
-  );
+  const selected = selectedSize ?? sizes[0] ?? null;
   const cols = columns ?? (style === "essentials" ? 4 : 6);
   return (
     <div
@@ -36,7 +36,7 @@ export function SizeSelector({
             <button
               key={size}
               type="button"
-              onClick={() => setSelected(size)}
+              onClick={() => onSizeChange?.(size)}
               className={cn(
                 base,
                 "py-4 border",
@@ -53,7 +53,7 @@ export function SizeSelector({
           <button
             key={size}
             type="button"
-            onClick={() => setSelected(size)}
+            onClick={() => onSizeChange?.(size)}
             className={cn(
               base,
               "h-12 border",

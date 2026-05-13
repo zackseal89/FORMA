@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Tag } from "@/components/ui/tag";
 import { formatKsh } from "@/lib/format";
-import type { Product } from "@/data/products";
+import type { Product } from "@/lib/commerce";
 
 export function ShopCard({ product }: { product: Product }) {
   const primaryShade = product.shades[0];

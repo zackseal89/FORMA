@@ -2,18 +2,22 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/cn";
-import type { Shade } from "@/data/products";
+import type { Shade } from "@/lib/commerce";
 
 type Style = "signature" | "essentials";
 
 export function ColorSelector({
   shades,
+  selectedShade,
+  onShadeChange,
   style = "signature",
 }: {
   shades: Shade[];
+  selectedShade?: Shade;
+  onShadeChange?: (shade: Shade) => void;
   style?: Style;
 }) {
-  const [selected, setSelected] = useState<Shade>(shades[1] ?? shades[0]);
+  const selected = selectedShade ?? shades[0];
 
   return (
     <div className="flex flex-col gap-stack-md">
@@ -33,7 +37,7 @@ export function ColorSelector({
                 type="button"
                 aria-label={shade.name}
                 title={shade.name}
-                onClick={() => setSelected(shade)}
+                onClick={() => onShadeChange?.(shade)}
                 style={{ backgroundColor: shade.hex }}
                 className={cn(
                   "w-8 h-8 transition-all",
@@ -50,7 +54,7 @@ export function ColorSelector({
               type="button"
               aria-label={shade.name}
               title={shade.name}
-              onClick={() => setSelected(shade)}
+              onClick={() => onShadeChange?.(shade)}
               style={{ backgroundColor: shade.hex }}
               className={cn(
                 "w-8 h-8 rounded-full transition-all",

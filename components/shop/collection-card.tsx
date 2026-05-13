@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatKsh } from "@/lib/format";
-import type { Product } from "@/data/products";
+import type { Product } from "@/lib/commerce";
 
 export function CollectionCard({ product }: { product: Product }) {
   return (

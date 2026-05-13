@@ -17,8 +17,9 @@ export function Newsletter({
 }: NewsletterProps) {
   return (
     <section
+      id="waitlist"
       className={cn(
-        "relative py-section-gap px-margin-mobile md:px-margin-desktop",
+        "relative py-section-gap px-margin-mobile md:px-margin-desktop scroll-mt-20",
         surface === "low" && "border-y hairline",
         className,
       )}

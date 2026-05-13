@@ -1,4 +1,4 @@
-import { categories, intensities, shadePalette } from "@/data/products";
+import { categories, intensities, shadePalette } from "@/lib/commerce";
 
 interface SidebarFiltersProps {
   activeCategory?: string;

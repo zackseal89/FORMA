@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { categories, products, productsByCategory } from "@/data/products";
+import { categories, getProducts, getProductsByCategory } from "@/lib/commerce";
 import { CollectionCard } from "@/components/shop/collection-card";
 import { PillFilters } from "@/components/shop/pill-filters";
 
@@ -66,12 +66,13 @@ export default async function CollectionPage({
   const matchedCategory = categories.find(
     (c) => c.toLowerCase().replace(/\s+/g, "-") === slug,
   );
+
   const items = matchedCategory
-    ? productsByCategory(matchedCategory)
-    : products;
+    ? await getProductsByCategory(matchedCategory)
+    : await getProducts();
 
   const pillOptions = [
-    { label: "All", href: `/collections/${slug}` },
+    { label: "All", href: `/shop` },
     { label: "Bodysuits", href: `/collections/sculpting-bodysuits` },
     { label: "Coming Soon", href: `/collections/the-edit` },
   ];
@@ -92,11 +93,19 @@ export default async function CollectionPage({
         activeHref={`/collections/${slug}`}
       />
 
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
-        {items.map((product) => (
-          <CollectionCard key={product.slug} product={product} />
-        ))}
-      </section>
+      {items.length === 0 ? (
+        <div className="py-24 text-center">
+          <p className="font-display italic text-[24px] text-on-surface-variant">
+            No pieces found in this collection.
+          </p>
+        </div>
+      ) : (
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+          {items.map((product) => (
+            <CollectionCard key={product.slug} product={product} />
+          ))}
+        </section>
+      )}
 
       <div className="pb-section-gap" />
     </main>

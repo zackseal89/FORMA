@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ColorSelector } from "@/components/pdp/color-selector";
@@ -5,10 +8,44 @@ import { SizeSelector } from "@/components/pdp/size-selector";
 import { SignatureGallery } from "@/components/pdp/gallery";
 import { TrustBadges } from "@/components/pdp/trust-badges";
 import { formatKsh } from "@/lib/format";
-import type { Product } from "@/data/products";
+import type { Product } from "@/lib/commerce";
+import { useCart } from "@/components/cart/cart-context";
 
 export function SignaturePdp({ product }: { product: Product }) {
   const { detail } = product;
+  const { addItem, isPending } = useCart();
+  
+  // Basic selection state
+  const [selectedSize, setSelectedSize] = useState(detail.sizes[0]);
+  const [selectedShade, setSelectedShade] = useState(product.shades[0]);
+
+  // Find the exact variant based on selected size and shade
+  const getSelectedVariantId = () => {
+    const variant = product.variants.find((v) => {
+      if (!v.selectedOptions) return false;
+      
+      const hasSizeOption = v.selectedOptions.some((opt) => opt.name.toLowerCase() === "size");
+      const hasColorOption = v.selectedOptions.some((opt) => opt.name.toLowerCase() === "color" || opt.name.toLowerCase() === "shade");
+
+      const matchesSize = v.selectedOptions.some((opt) => opt.name.toLowerCase() === "size" && opt.value === selectedSize);
+      const matchesColor = v.selectedOptions.some((opt) => (opt.name.toLowerCase() === "color" || opt.name.toLowerCase() === "shade") && opt.value === selectedShade.name);
+
+      const sizeMatch = hasSizeOption ? matchesSize : true;
+      const colorMatch = hasColorOption ? matchesColor : true;
+
+      return sizeMatch && colorMatch;
+    });
+    
+    return variant?.id || product.variants[0]?.id;
+  };
+
+  const handleAddToCart = async () => {
+    const variantId = getSelectedVariantId();
+    if (variantId) {
+      await addItem(variantId);
+    }
+  };
+
   return (
     <>
       <section className="max-w-[var(--container-max)] mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-24">
@@ -32,7 +69,11 @@ export function SignaturePdp({ product }: { product: Product }) {
               {detail.shortDescription}
             </p>
 
-            <ColorSelector shades={product.shades} />
+            <ColorSelector 
+              shades={product.shades} 
+              selectedShade={selectedShade}
+              onShadeChange={setSelectedShade}
+            />
 
             <div className="flex flex-col gap-stack-md">
               <div className="flex justify-between items-center">
@@ -46,12 +87,21 @@ export function SignaturePdp({ product }: { product: Product }) {
                   See the size guide
                 </Link>
               </div>
-              <SizeSelector sizes={detail.sizes} style="signature" />
+              <SizeSelector 
+                sizes={detail.sizes} 
+                selectedSize={selectedSize}
+                onSizeChange={setSelectedSize}
+                style="signature" 
+              />
             </div>
 
             <div className="flex flex-col gap-stack-md pt-4">
-              <button className="w-full h-16 bg-primary-container text-on-primary-container font-sans uppercase tracking-[0.1em] text-[14px] font-medium active:scale-[0.98] transition-transform duration-200">
-                Add to Cart
+              <button 
+                onClick={handleAddToCart}
+                disabled={isPending || !product.inStock}
+                className="w-full h-16 bg-primary-container text-on-primary-container font-sans uppercase tracking-[0.1em] text-[14px] font-medium active:scale-[0.98] transition-transform duration-200 disabled:opacity-50"
+              >
+                {isPending ? "Adding..." : product.inStock ? "Add to Cart" : "Out of Stock"}
               </button>
               <button className="w-full h-16 border border-on-surface text-on-surface font-sans uppercase tracking-[0.1em] text-[14px] font-medium hover:bg-on-surface hover:text-surface transition-colors duration-300">
                 Join the Waitlist

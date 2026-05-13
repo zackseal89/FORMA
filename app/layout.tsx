@@ -3,6 +3,8 @@ import { DM_Sans, EB_Garamond } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { CartProvider } from "@/components/cart/cart-context";
+import { CartSidebar } from "@/components/cart/cart-sidebar";
 
 const ebGaramond = EB_Garamond({
   variable: "--font-eb-garamond",
@@ -38,9 +40,12 @@ export default function RootLayout({
       className={`${ebGaramond.variable} ${dmSans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-on-background">
-        <Header />
-        <main className="flex-1 pt-20">{children}</main>
-        <Footer />
+        <CartProvider>
+          <Header />
+          <CartSidebar />
+          <main className="flex-1 pt-20">{children}</main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

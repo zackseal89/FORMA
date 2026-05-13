@@ -4,14 +4,19 @@ import { BentoFeature } from "@/components/marketing/bento-feature";
 import { Newsletter } from "@/components/marketing/newsletter";
 import { SectionHeading } from "@/components/marketing/section-heading";
 import { ProductCard } from "@/components/product/product-card";
-import { featuredProducts } from "@/data/products";
+import { getFeaturedProducts } from "@/lib/commerce";
 
-export default function Home() {
+export default async function Home() {
+  const featuredProducts = await getFeaturedProducts();
+
   return (
     <>
       <Hero />
 
-      <section className="py-section-gap px-margin-mobile md:px-margin-desktop max-w-[var(--container-max)] mx-auto">
+      <section
+        id="new-arrivals"
+        className="py-section-gap px-margin-mobile md:px-margin-desktop max-w-[var(--container-max)] mx-auto scroll-mt-20"
+      >
         <SectionHeading
           title="New Arrivals"
           action={{ label: "View All", href: "/shop" }}

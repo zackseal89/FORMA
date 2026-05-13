@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ColorSelector } from "@/components/pdp/color-selector";
@@ -5,11 +8,48 @@ import { SizeSelector } from "@/components/pdp/size-selector";
 import { EssentialsGallery } from "@/components/pdp/gallery";
 import { Accordion, AccordionItem } from "@/components/pdp/accordion";
 import { formatKsh } from "@/lib/format";
-import { accessories } from "@/data/accessories";
-import type { Product } from "@/data/products";
+import type { Product } from "@/lib/commerce";
+import { useCart } from "@/components/cart/cart-context";
 
-export function EssentialsPdp({ product }: { product: Product }) {
+export function EssentialsPdp({
+  product,
+  accessories = [],
+}: {
+  product: Product;
+  accessories?: Product[];
+}) {
   const { detail } = product;
+  const { addItem, isPending } = useCart();
+  
+  const [selectedSize, setSelectedSize] = useState(detail.sizes[0]);
+  const [selectedShade, setSelectedShade] = useState(product.shades[0]);
+
+  const getSelectedVariantId = () => {
+    const variant = product.variants.find((v) => {
+      if (!v.selectedOptions) return false;
+      
+      const hasSizeOption = v.selectedOptions.some((opt) => opt.name.toLowerCase() === "size");
+      const hasColorOption = v.selectedOptions.some((opt) => opt.name.toLowerCase() === "color" || opt.name.toLowerCase() === "shade");
+
+      const matchesSize = v.selectedOptions.some((opt) => opt.name.toLowerCase() === "size" && opt.value === selectedSize);
+      const matchesColor = v.selectedOptions.some((opt) => (opt.name.toLowerCase() === "color" || opt.name.toLowerCase() === "shade") && opt.value === selectedShade.name);
+
+      const sizeMatch = hasSizeOption ? matchesSize : true;
+      const colorMatch = hasColorOption ? matchesColor : true;
+
+      return sizeMatch && colorMatch;
+    });
+    
+    return variant?.id || product.variants[0]?.id;
+  };
+
+  const handleAddToCart = async () => {
+    const variantId = getSelectedVariantId();
+    if (variantId) {
+      await addItem(variantId);
+    }
+  };
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-12 min-h-screen">
@@ -42,7 +82,12 @@ export function EssentialsPdp({ product }: { product: Product }) {
           </p>
 
           <div className="flex flex-col gap-8">
-            <ColorSelector shades={product.shades} style="essentials" />
+            <ColorSelector 
+              shades={product.shades} 
+              selectedShade={selectedShade}
+              onShadeChange={setSelectedShade}
+              style="essentials" 
+            />
 
             <div className="flex flex-col gap-4">
               <div className="flex justify-between items-center">
@@ -56,13 +101,22 @@ export function EssentialsPdp({ product }: { product: Product }) {
                   SIZE GUIDE
                 </Link>
               </div>
-              <SizeSelector sizes={detail.sizes} style="essentials" />
+              <SizeSelector 
+                sizes={detail.sizes} 
+                selectedSize={selectedSize}
+                onSizeChange={setSelectedSize}
+                style="essentials" 
+              />
             </div>
           </div>
 
           <div className="flex flex-col gap-4">
-            <button className="w-full bg-primary-container text-on-primary-container font-sans py-5 hover:opacity-90 transition-opacity uppercase tracking-widest text-[16px] font-medium">
-              Add to Bag
+            <button 
+              onClick={handleAddToCart}
+              disabled={isPending || !product.inStock}
+              className="w-full bg-primary-container text-on-primary-container font-sans py-5 hover:opacity-90 transition-opacity uppercase tracking-widest text-[16px] font-medium disabled:opacity-50"
+            >
+              {isPending ? "Adding..." : product.inStock ? "Add to Bag" : "Out of Stock"}
             </button>
             <button className="w-full border border-on-surface text-on-surface font-sans py-5 hover:bg-surface-container transition-colors uppercase tracking-widest text-[16px] font-medium">
               Wishlist
@@ -108,7 +162,10 @@ export function EssentialsPdp({ product }: { product: Product }) {
                 key={item.slug}
                 className={`flex flex-col gap-6 group ${i >= 2 ? "hidden md:flex" : ""}`}
               >
-                <div className="relative overflow-hidden aspect-[3/4] bg-surface-container">
+                <Link
+                  href={`/products/${item.slug}`}
+                  className="relative overflow-hidden aspect-[3/4] bg-surface-container"
+                >
                   <Image
                     src={item.image}
                     alt={item.alt}
@@ -116,13 +173,15 @@ export function EssentialsPdp({ product }: { product: Product }) {
                     sizes="(min-width: 768px) 25vw, 50vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                </div>
+                </Link>
                 <div className="flex flex-col gap-1">
                   <span className="font-label-caps text-[10px] text-on-surface-variant">
                     {item.category.toUpperCase()}
                   </span>
                   <h3 className="font-sans text-[16px] text-on-surface">
-                    {item.name}
+                    <Link href={`/products/${item.slug}`} className="hover:text-primary">
+                      {item.name}
+                    </Link>
                   </h3>
                   <span className="font-sans text-[16px] text-on-surface-variant">
                     {formatKsh(item.price)}
