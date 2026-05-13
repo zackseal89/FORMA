@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/*  FORMA — Editorial Noir design tokens (Tailwind v4 @theme)         */
+/*  Source of truth: stitch_forma_design_system/editorial_noir/       */
+/* ------------------------------------------------------------------ */
+
+@theme {
+  /* -- Surfaces -------------------------------------------------- */
+  --color-surface: #131312;
+  --color-surface-dim: #131312;
+  --color-surface-bright: #3a3937;
+  --color-surface-container-lowest: #0e0e0c;
+  --color-surface-container-low: #1c1c1a;
+  --color-surface-container: #20201e;
+  --color-surface-container-high: #2a2a28;
+  --color-surface-container-highest: #353532;
+  --color-surface-variant: #353532;
+  --color-surface-tint: #ffb693;
+  --color-background: #131312;
+  --color-inverse-surface: #e5e2de;
+  --color-inverse-on-surface: #31302e;
+
+  /* -- Foreground ------------------------------------------------ */
+  --color-on-surface: #e5e2de;
+  --color-on-surface-variant: #dcc1b5;
+  --color-on-background: #e5e2de;
+  --color-outline: #a48c81;
+  --color-outline-variant: #56433a;
+
+  /* -- Primary (Terracotta) ------------------------------------- */
+  --color-primary: #ffb693;
+  --color-on-primary: #561f00;
+  --color-primary-container: #dc743e;
+  --color-on-primary-container: #4b1b00;
+  --color-inverse-primary: #9c440f;
+  --color-primary-fixed: #ffdbcc;
+  --color-primary-fixed-dim: #ffb693;
+  --color-on-primary-fixed: #351000;
+  --color-on-primary-fixed-variant: #7a3000;
+
+  /* -- Secondary (Cream) ---------------------------------------- */
+  --color-secondary: #cac6c0;
+  --color-on-secondary: #32302c;
+  --color-secondary-container: #4b4945;
+  --color-on-secondary-container: #bcb8b2;
+  --color-secondary-fixed: #e6e2dc;
+  --color-secondary-fixed-dim: #cac6c0;
+  --color-on-secondary-fixed: #1d1b18;
+  --color-on-secondary-fixed-variant: #484642;
+
+  /* -- Tertiary (Nude) ------------------------------------------ */
+  --color-tertiary: #dec1a9;
+  --color-on-tertiary: #3e2d1c;
+  --color-tertiary-container: #a58c76;
+  --color-on-tertiary-container: #372616;
+  --color-tertiary-fixed: #fbddc4;
+  --color-tertiary-fixed-dim: #dec1a9;
+  --color-on-tertiary-fixed: #271809;
+  --color-on-tertiary-fixed-variant: #574330;
+
+  /* -- Error ---------------------------------------------------- */
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-error-container: #93000a;
+  --color-on-error-container: #ffdad6;
+
+  /* -- Typography (families wired via next/font CSS variables) -- */
+  --font-display: var(--font-eb-garamond), "EB Garamond", serif;
+  --font-sans: var(--font-dm-sans), "DM Sans", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* -- Type scale ----------------------------------------------- */
+  --text-display-lg: 64px;
+  --text-display-lg--line-height: 1.1;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 400;
+
+  --text-display-lg-mobile: 40px;
+  --text-display-lg-mobile--line-height: 1.2;
+  --text-display-lg-mobile--font-weight: 400;
+
+  --text-headline-md: 32px;
+  --text-headline-md--line-height: 1.2;
+  --text-headline-md--font-weight: 400;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 1.6;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 1.6;
+  --text-body-md--font-weight: 400;
+
+  --text-label-caps: 12px;
+  --text-label-caps--line-height: 1;
+  --text-label-caps--letter-spacing: 0.1em;
+  --text-label-caps--font-weight: 600;
+
+  --text-button: 14px;
+  --text-button--line-height: 1;
+  --text-button--letter-spacing: 0.05em;
+  --text-button--font-weight: 500;
+
+  /* -- Spacing tokens (editorial rhythm) ------------------------ */
+  --spacing-stack-sm: 8px;
+  --spacing-stack-md: 16px;
+  --spacing-stack-lg: 32px;
+  --spacing-gutter: 24px;
+  --spacing-margin-mobile: 20px;
+  --spacing-margin-desktop: 64px;
+  --spacing-section-gap: 120px;
+
+  /* -- Container ------------------------------------------------ */
+  --container-max: 1440px;
+
+  /* -- Radii (sharp by default; pills only) --------------------- */
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-pill: 8px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                              */
+/* ------------------------------------------------------------------ */
+
+html,
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: color-mix(in oklab, var(--color-primary-container) 30%, transparent);
+}
+
+.font-label-caps {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
