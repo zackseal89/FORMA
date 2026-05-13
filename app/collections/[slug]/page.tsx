@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { categories, getProducts, getProductsByCategory } from "@/lib/commerce";
+import {
+  categories,
+  getProducts,
+  getProductsByCategory,
+  getProductsByCollectionHandle,
+} from "@/lib/commerce";
 import { CollectionCard } from "@/components/shop/collection-card";
 import { PillFilters } from "@/components/shop/pill-filters";
 
@@ -62,14 +67,21 @@ export default async function CollectionPage({
   const collection = KNOWN_COLLECTIONS[slug];
   if (!collection) notFound();
 
-  // Map slug to a curated product list.
+  // Prefer a real Shopify collection matching the slug. Fall back to category
+  // filtering (for slugs like `sculpting-bodysuits`), then to the full catalog
+  // for editorial slugs (`new-arrivals`, `best-sellers`, `the-edit`) that
+  // shouldn't read as empty when the Shopify collection isn't set up yet.
   const matchedCategory = categories.find(
     (c) => c.toLowerCase().replace(/\s+/g, "-") === slug,
   );
 
-  const items = matchedCategory
-    ? await getProductsByCategory(matchedCategory)
-    : await getProducts();
+  let items = await getProductsByCollectionHandle(slug);
+  if (items.length === 0 && matchedCategory) {
+    items = await getProductsByCategory(matchedCategory);
+  }
+  if (items.length === 0 && !matchedCategory) {
+    items = await getProducts();
+  }
 
   const pillOptions = [
     { label: "All", href: `/shop` },

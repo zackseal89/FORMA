@@ -165,6 +165,10 @@ export const PRODUCT_FRAGMENT = /* GraphQL */ `
         }
       }
     }
+    options {
+      name
+      values
+    }
     variants(first: 50) {
       edges {
         node {
@@ -172,6 +176,10 @@ export const PRODUCT_FRAGMENT = /* GraphQL */ `
           title
           availableForSale
           price {
+            amount
+            currencyCode
+          }
+          compareAtPrice {
             amount
             currencyCode
           }

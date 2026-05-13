@@ -178,7 +178,18 @@ export async function getFeaturedProducts(): Promise<Product[]> {
 }
 
 export async function getProductsByCategory(category: string): Promise<Product[]> {
-  // Shopify filter by product_type
+  // Shopify product_type values are typically the noun ("Bodysuits"), while our
+  // editorial category names add a descriptor ("Sculpting Bodysuits"). Match on
+  // any whole word so both spellings hit the same products, and also accept the
+  // word as a tag.
+  const words = category.split(/\s+/).filter(Boolean);
+  const clauses = [
+    `product_type:'${category}'`,
+    ...words.map((w) => `product_type:${w}`),
+    ...words.map((w) => `tag:${w.toLowerCase()}`),
+  ];
+  const queryString = clauses.join(" OR ");
+
   const query = /* GraphQL */ `
     query getProductsByCategory($query: String!) {
       products(first: 20, query: $query) {
@@ -193,11 +204,41 @@ export async function getProductsByCategory(category: string): Promise<Product[]
   `;
 
   const data = await shopifyFetch<any>(
-    query, 
-    { query: `product_type:'${category}'` },
+    query,
+    { query: queryString },
     { tags: ["products", `category-${category}`], revalidate: 3600 }
   );
   return data.products.edges.map((edge: any) => mapShopifyProduct(edge.node));
+}
+
+export async function getProductsByCollectionHandle(
+  handle: string,
+): Promise<Product[]> {
+  const query = /* GraphQL */ `
+    query getCollectionProducts($handle: String!) {
+      collection(handle: $handle) {
+        id
+        products(first: 20) {
+          edges {
+            node {
+              ...product
+            }
+          }
+        }
+      }
+    }
+    ${PRODUCT_FRAGMENT}
+  `;
+
+  const data = await shopifyFetch<any>(
+    query,
+    { handle },
+    { tags: ["products", `collection-${handle}`], revalidate: 3600 },
+  );
+  if (!data.collection) return [];
+  return data.collection.products.edges.map((edge: any) =>
+    mapShopifyProduct(edge.node),
+  );
 }
 
 export async function getAccessories(): Promise<Product[]> {
