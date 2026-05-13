@@ -143,7 +143,7 @@ export default function JournalPage() {
           </article>
 
           <aside className="md:col-span-4 flex flex-col justify-end">
-            <div className="border-l border-outline-variant pl-8 py-10">
+            <div className="glass-panel p-stack-lg">
               <h3 className="font-label-caps text-primary mb-6">
                 Latest in Journal
               </h3>

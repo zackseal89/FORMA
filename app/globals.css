@@ -149,3 +149,42 @@ body {
   letter-spacing: 0.1em;
   font-weight: 600;
 }
+
+/* ------------------------------------------------------------------ */
+/*  Glass — executive surface treatment                               */
+/*  Translucent panel + hairline border + 1px top-edge inner highlight.
+/*  Use on cards, header, newsletter, side rails. Sharp corners stay. */
+/* ------------------------------------------------------------------ */
+
+.glass-panel {
+  position: relative;
+  background-color: color-mix(in oklab, var(--color-surface-container) 62%, transparent);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border: 1px solid color-mix(in oklab, var(--color-on-surface) 8%, transparent);
+}
+
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--color-on-surface) 9%, transparent) 0%,
+    transparent 36%
+  );
+}
+
+/* Quieter variant for nav/header — still translucent, less blur, no sheen. */
+.glass-bar {
+  background-color: color-mix(in oklab, var(--color-background) 70%, transparent);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-on-surface) 8%, transparent);
+}
+
+/* Hairline divider for sectional rhythm. */
+.hairline {
+  border-color: color-mix(in oklab, var(--color-on-surface) 8%, transparent);
+}

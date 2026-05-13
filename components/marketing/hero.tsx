@@ -14,7 +14,15 @@ export function Hero() {
         sizes="100vw"
         className="object-cover grayscale brightness-50"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-background/10" />
+      <div
+        aria-hidden
+        className="absolute inset-0 opacity-60"
+        style={{
+          background:
+            "radial-gradient(60% 50% at 50% 60%, transparent 0%, rgba(0,0,0,0.55) 100%)",
+        }}
+      />
 
       <div className="relative z-10 px-margin-mobile md:px-margin-desktop max-w-4xl">
         <h1 className="font-display italic text-[56px] md:text-[120px] leading-[1.0] mb-stack-lg">

@@ -29,7 +29,7 @@ export default function SizeGuidePage() {
           {measurementSteps.map((step) => (
             <article
               key={step.step}
-              className="bg-surface-container-low p-stack-lg border border-transparent hover:border-outline-variant transition-colors group"
+              className="glass-panel p-stack-lg transition-colors group"
             >
               <div className="relative aspect-[3/4] mb-8 bg-surface-container-highest overflow-hidden">
                 <Image

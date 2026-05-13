@@ -9,7 +9,7 @@ const nav = [
 
 export function Header() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 h-20 bg-background border-b border-outline-variant">
+    <header className="fixed inset-x-0 top-0 z-50 h-20 glass-bar">
       <div className="h-full px-margin-mobile md:px-margin-desktop flex items-center justify-between">
         <div className="flex items-center gap-10">
           <Link

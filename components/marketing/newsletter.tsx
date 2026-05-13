@@ -18,14 +18,22 @@ export function Newsletter({
   return (
     <section
       className={cn(
-        "py-section-gap px-margin-mobile md:px-margin-desktop text-center",
-        surface === "high"
-          ? "bg-surface-container-highest"
-          : "bg-surface-container-low border-y border-outline-variant",
+        "relative py-section-gap px-margin-mobile md:px-margin-desktop",
+        surface === "low" && "border-y hairline",
         className,
       )}
     >
-      <div className="max-w-2xl mx-auto flex flex-col items-center gap-stack-md">
+      {/* Background wash — terracotta-tinted radial behind the glass panel */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 opacity-[0.18]"
+        style={{
+          background:
+            "radial-gradient(60% 60% at 50% 0%, var(--color-primary-container), transparent 70%)",
+        }}
+      />
+      <div className="relative max-w-3xl mx-auto">
+        <div className="glass-panel px-stack-lg md:px-16 py-section-gap text-center flex flex-col items-center gap-stack-md">
         {eyebrow && (
           <span className="font-label-caps text-tertiary">{eyebrow}</span>
         )}
@@ -56,6 +64,7 @@ export function Newsletter({
             Subscribe
           </button>
         </form>
+        </div>
       </div>
     </section>
   );

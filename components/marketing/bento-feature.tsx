@@ -5,7 +5,7 @@ export function BentoFeature() {
   return (
     <section className="py-section-gap px-margin-mobile md:px-margin-desktop max-w-[var(--container-max)] mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter h-auto md:h-[600px]">
-        <div className="md:col-span-4 bg-surface-container-high p-stack-lg flex flex-col justify-end">
+        <div className="md:col-span-4 glass-panel p-stack-lg flex flex-col justify-end">
           <DiversityGlyph />
           <h4 className="font-display italic text-[24px] mb-2 mt-stack-md">
             Inclusive by Design

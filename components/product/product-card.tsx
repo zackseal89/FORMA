@@ -14,16 +14,20 @@ export interface ProductCardData {
 export function ProductCard({ product }: { product: ProductCardData }) {
   return (
     <Link href={`/products/${product.slug}`} className="group block">
-      <div className="relative bg-surface-container-high overflow-hidden mb-stack-md aspect-[3/4]">
+      <div className="glass-panel relative overflow-hidden mb-stack-md aspect-[3/4]">
         <Image
           src={product.image}
           alt={product.alt}
           fill
           sizes="(min-width: 768px) 33vw, 100vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-700"
+          className="object-cover group-hover:scale-[1.04] transition-transform duration-[900ms] ease-out"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-on-surface/30 to-transparent"
         />
       </div>
-      <div className="px-2">
+      <div className="px-1">
         <p className="font-label-caps text-on-surface-variant mb-1">
           {product.category}
         </p>
