@@ -10,9 +10,12 @@ interface GalleryImage {
 }
 
 export function SignatureGallery({ images }: { images: GalleryImage[] }) {
-  const [activeIndex, setActiveIndex] = useState(images.length > 1 ? 1 : 0);
-  const active = images[activeIndex];
-  const thumbs = images.slice(1);
+  // Every uploaded image must be reachable. Previously thumbs sliced from
+  // index 1 while the hero started at index 1 too, which made image[0]
+  // (the Shopify featured image) impossible to view.
+  const [activeIndex, setActiveIndex] = useState(0);
+  const active = images[activeIndex] ?? images[0];
+  if (!active) return null;
   return (
     <div className="flex flex-col gap-stack-md">
       <div className="aspect-[3/4] bg-surface-container-high overflow-hidden relative group">
@@ -26,16 +29,15 @@ export function SignatureGallery({ images }: { images: GalleryImage[] }) {
           className="object-cover grayscale brightness-90 group-hover:grayscale-0 transition-all duration-700 ease-in-out"
         />
       </div>
-      {thumbs.length > 0 && (
-        <div className="grid grid-cols-3 gap-stack-md">
-          {thumbs.map((img, i) => {
-            const realIndex = i + 1;
-            const isActive = realIndex === activeIndex;
+      {images.length > 1 && (
+        <div className="grid grid-cols-4 gap-stack-md">
+          {images.map((img, i) => {
+            const isActive = i === activeIndex;
             return (
               <button
                 key={img.src}
                 type="button"
-                onClick={() => setActiveIndex(realIndex)}
+                onClick={() => setActiveIndex(i)}
                 className={cn(
                   "relative aspect-square bg-surface-container-high overflow-hidden transition-opacity",
                   isActive ? "border border-primary" : "hover:opacity-80",
@@ -46,7 +48,7 @@ export function SignatureGallery({ images }: { images: GalleryImage[] }) {
                   src={img.src}
                   alt=""
                   fill
-                  sizes="(min-width: 768px) 17vw, 33vw"
+                  sizes="(min-width: 768px) 12vw, 25vw"
                   className="object-cover grayscale transition-all duration-500"
                 />
               </button>

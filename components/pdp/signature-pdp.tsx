@@ -69,6 +69,13 @@ export function SignaturePdp({ product }: { product: Product }) {
               {detail.shortDescription}
             </p>
 
+            {detail.longDescription && !detail.narrativeHeadline && (
+              <div
+                className="font-sans text-[15px] leading-[1.7] text-on-surface-variant max-w-md prose prose-sm [&_h2]:font-display [&_h2]:text-[20px] [&_h2]:text-on-surface [&_h2]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-3 [&_li]:mb-1 [&_p]:mb-3"
+                dangerouslySetInnerHTML={{ __html: detail.longDescription }}
+              />
+            )}
+
             <ColorSelector 
               shades={product.shades} 
               selectedShade={selectedShade}
@@ -121,9 +128,10 @@ export function SignaturePdp({ product }: { product: Product }) {
                 {detail.narrativeHeadline}
               </h2>
               {detail.longDescription && (
-                <p className="font-sans text-[18px] leading-[1.6] text-on-surface-variant mb-10 max-w-lg">
-                  {detail.longDescription}
-                </p>
+                <div
+                  className="font-sans text-[18px] leading-[1.6] text-on-surface-variant mb-10 max-w-lg [&_h2]:font-display [&_h2]:text-[22px] [&_h2]:text-on-surface [&_h2]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-3 [&_li]:mb-1 [&_p]:mb-3"
+                  dangerouslySetInnerHTML={{ __html: detail.longDescription }}
+                />
               )}
               {detail.meta && (
                 <div className="grid grid-cols-2 gap-stack-lg">

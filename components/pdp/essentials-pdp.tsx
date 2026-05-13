@@ -81,6 +81,13 @@ export function EssentialsPdp({
             {detail.shortDescription}
           </p>
 
+          {detail.longDescription && (
+            <div
+              className="font-sans text-[15px] leading-[1.7] text-on-surface-variant max-w-md [&_h2]:font-display [&_h2]:text-[20px] [&_h2]:text-on-surface [&_h2]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-3 [&_li]:mb-1 [&_p]:mb-3"
+              dangerouslySetInnerHTML={{ __html: detail.longDescription }}
+            />
+          )}
+
           <div className="flex flex-col gap-8">
             <ColorSelector 
               shades={product.shades} 
