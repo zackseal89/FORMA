@@ -13,6 +13,7 @@ export function OurStory() {
                 src={PLACEHOLDERS.ourStory}
                 alt="A cinematic Nairobi skyline at sunset, anchoring FORMA's roots."
                 fill
+                quality={92}
                 sizes="(min-width: 768px) 58vw, 100vw"
                 className="object-cover"
               />

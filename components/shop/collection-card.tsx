@@ -14,6 +14,7 @@ export function CollectionCard({ product }: { product: Product }) {
           src={product.image}
           alt={product.alt}
           fill
+          quality={90}
           sizes="(min-width: 768px) 50vw, 100vw"
           className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
         />

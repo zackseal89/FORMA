@@ -28,6 +28,7 @@ export default function JournalPage() {
                 alt={featuredEntry.alt}
                 fill
                 priority
+                quality={95}
                 sizes="(min-width: 768px) 58vw, 100vw"
                 className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-105 group-hover:scale-100"
               />
@@ -124,6 +125,7 @@ export default function JournalPage() {
                 src={PLACEHOLDERS.studioVisit}
                 alt="The FORMA design studio in Nairobi at twilight, sparse and quietly creative."
                 fill
+                quality={92}
                 sizes="(min-width: 768px) 66vw, 100vw"
                 className="object-cover transition-all duration-1000 grayscale group-hover:grayscale-0 group-hover:scale-105"
               />

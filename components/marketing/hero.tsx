@@ -11,6 +11,7 @@ export function Hero() {
         alt="A confident woman in minimalist premium FORMA shapewear, photographed in low-key Nairobi light."
         fill
         priority
+        quality={95}
         sizes="100vw"
         className="object-cover grayscale brightness-50"
       />

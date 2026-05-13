@@ -21,6 +21,7 @@ export function BentoFeature() {
             src={PLACEHOLDERS.bento}
             alt="A model in a nude FORMA bodysuit against a marble column — clean editorial composition."
             fill
+            quality={92}
             sizes="(min-width: 768px) 66vw, 100vw"
             className="object-cover group-hover:scale-105 transition-transform duration-1000"
           />
