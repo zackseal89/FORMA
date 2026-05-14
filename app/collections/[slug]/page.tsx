@@ -8,6 +8,8 @@ import {
 import { CollectionCard } from "@/components/shop/collection-card";
 import { PillFilters } from "@/components/shop/pill-filters";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://forma.example";
+
 const KNOWN_COLLECTIONS: Record<string, { title: string; tagline: string }> = {
   "new-arrivals": {
     title: "New Arrivals",
@@ -54,6 +56,21 @@ export async function generateMetadata({
   return {
     title: collection.title,
     description: collection.tagline,
+    alternates: { canonical: `/collections/${slug}` },
+    openGraph: {
+      type: "website",
+      title: `${collection.title} · FORMA`,
+      description: collection.tagline,
+      url: `${SITE_URL}/collections/${slug}`,
+      images: [
+        {
+          url: "/og-default.jpg",
+          width: 1200,
+          height: 630,
+          alt: `${collection.title} — FORMA`,
+        },
+      ],
+    },
   };
 }
 
@@ -69,7 +86,9 @@ export default async function CollectionPage({
   // Prefer a real Shopify collection matching the slug. Fall back to category
   // filtering using the slug's title-cased form. Editorial slugs without a
   // matching Shopify collection fall through to the full catalog.
-  const slugAsCategory = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const slugAsCategory = slug
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 
   let items = await getProductsByCollectionHandle(slug);
   if (items.length === 0) {
@@ -85,8 +104,56 @@ export default async function CollectionPage({
     { label: "Coming Soon", href: `/collections/the-edit` },
   ];
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Shop",
+        item: `${SITE_URL}/shop`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: collection.title,
+        item: `${SITE_URL}/collections/${slug}`,
+      },
+    ],
+  };
+
+  const itemListJsonLd =
+    items.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: collection.title,
+          description: collection.tagline,
+          numberOfItems: items.length,
+          itemListElement: items.map((product, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            url: `${SITE_URL}/products/${product.slug}`,
+            name: product.name,
+          })),
+        }
+      : null;
+
   return (
     <main className="max-w-[var(--container-max)] mx-auto px-margin-mobile md:px-margin-desktop">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {itemListJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
+        />
+      )}
+
       <section className="mt-section-gap mb-stack-lg text-center">
         <h1 className="font-display italic text-[40px] md:text-[64px] leading-[1.1] mb-stack-sm">
           {collection.title}

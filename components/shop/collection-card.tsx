@@ -18,11 +18,22 @@ export function CollectionCard({ product }: { product: Product }) {
           sizes="(min-width: 768px) 50vw, 100vw"
           className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-background/30 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        {/* Desktop: full hover overlay with View Product CTA */}
+        <div className="hidden md:flex absolute inset-0 items-center justify-center bg-background/30 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <span className="px-10 py-3 border border-on-surface text-on-surface font-sans uppercase text-[14px] tracking-[0.05em] font-medium hover:bg-on-surface hover:text-background transition-colors">
             View Product
           </span>
         </div>
+        {/* Mobile: always-visible affordance — touch has no hover */}
+        <span
+          aria-hidden="true"
+          className="md:hidden absolute bottom-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-background/70 backdrop-blur-[2px] border border-on-surface/30 text-on-surface font-label-caps text-[10px]"
+        >
+          View
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M5 12h14M13 5l7 7-7 7" />
+          </svg>
+        </span>
       </Link>
       <div className="py-stack-lg flex flex-col gap-2">
         <div className="flex justify-between items-start gap-stack-md">

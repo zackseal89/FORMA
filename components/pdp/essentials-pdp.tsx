@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ColorSelector } from "@/components/pdp/color-selector";
 import { SizeSelector } from "@/components/pdp/size-selector";
 import { EssentialsGallery } from "@/components/pdp/gallery";
 import { Accordion, AccordionItem } from "@/components/pdp/accordion";
+import { PdpTrustStrip } from "@/components/pdp/trust-strip";
+import { MobileStickyAtc } from "@/components/pdp/mobile-sticky-atc";
 import { formatKsh } from "@/lib/format";
 import type { Product } from "@/lib/commerce";
 import { useCart } from "@/components/cart/cart-context";
@@ -20,7 +22,8 @@ export function EssentialsPdp({
 }) {
   const { detail } = product;
   const { addItem, isPending } = useCart();
-  
+  const ctaRef = useRef<HTMLButtonElement>(null);
+
   const [selectedSize, setSelectedSize] = useState(detail.sizes[0]);
   const [selectedShade, setSelectedShade] = useState(product.shades[0]);
 
@@ -98,16 +101,26 @@ export function EssentialsPdp({
 
             {detail.sizes.length > 0 && (
               <div className="flex flex-col gap-4">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center flex-wrap gap-2">
                   <span className="font-label-caps text-on-surface">
                     SELECT SIZE
                   </span>
-                  <Link
-                    href="/size-guide"
-                    className="font-label-caps text-[10px] text-on-surface-variant border-b border-outline-variant hover:text-on-surface transition-colors"
-                  >
-                    SIZE GUIDE
-                  </Link>
+                  <div className="flex items-center gap-4">
+                    <Link
+                      href="/size-guide"
+                      className="font-label-caps text-[10px] text-on-surface-variant border-b border-outline-variant hover:text-on-surface transition-colors"
+                    >
+                      SIZE GUIDE
+                    </Link>
+                    <a
+                      href={`https://wa.me/254795023213?text=${encodeURIComponent(`Hi FORMA, I'd like help choosing a size for the ${product.name}.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-label-caps text-[10px] text-primary border-b border-primary/60 hover:opacity-80 transition-opacity"
+                    >
+                      ASK ON WHATSAPP
+                    </a>
+                  </div>
                 </div>
                 <SizeSelector
                   sizes={detail.sizes}
@@ -115,12 +128,17 @@ export function EssentialsPdp({
                   onSizeChange={setSelectedSize}
                   style="essentials"
                 />
+                <p className="font-label-caps text-[10px] text-on-surface-variant/80 leading-[1.5] mt-2">
+                  Fits true to size. If between sizes, size up for comfort.
+                  <span className="block mt-1">Restocks monthly.</span>
+                </p>
               </div>
             )}
           </div>
 
           <div className="flex flex-col gap-4">
-            <button 
+            <button
+              ref={ctaRef}
               onClick={handleAddToCart}
               disabled={isPending || !product.inStock}
               className="w-full bg-primary-container text-on-primary-container font-sans py-5 hover:opacity-90 transition-opacity uppercase tracking-widest text-[16px] font-medium disabled:opacity-50"
@@ -131,6 +149,12 @@ export function EssentialsPdp({
               Wishlist
             </button>
           </div>
+
+          <PdpTrustStrip />
+
+          <p className="font-label-caps text-[10px] text-on-surface-variant text-center -mt-4">
+            Free exchanges in Nairobi · 7-day return countrywide
+          </p>
 
           <Accordion>
             {detail.materialAndCare && (
@@ -146,6 +170,17 @@ export function EssentialsPdp({
           </Accordion>
         </section>
       </div>
+
+      <MobileStickyAtc
+        targetRef={ctaRef}
+        productName={product.name}
+        price={product.price}
+        selectedSize={selectedSize}
+        inStock={product.inStock}
+        isPending={isPending}
+        onAdd={handleAddToCart}
+        ctaLabel="Add to Bag"
+      />
 
       {accessories.length > 0 && (
       <section className="py-section-gap px-margin-mobile md:px-margin-desktop bg-surface-container-lowest">

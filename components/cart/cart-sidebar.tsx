@@ -3,6 +3,8 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useCart } from "./cart-context";
+import { CartTrustRow } from "./cart-trust-row";
+import { FreeShipBar } from "./free-ship-bar";
 import { formatKsh } from "@/lib/format";
 import { clsx } from "clsx";
 
@@ -123,8 +125,12 @@ export function CartSidebar() {
         </div>
 
         {cart.lines.length > 0 && (
-          <footer className="px-8 py-10 border-t border-surface-container-high bg-surface-container-lowest">
-            <div className="flex justify-between items-end mb-8">
+          <footer className="px-8 py-8 border-t border-surface-container-high bg-surface-container-lowest">
+            <FreeShipBar
+              subtotal={parseFloat(cart.cost.subtotalAmount.amount)}
+            />
+
+            <div className="flex justify-between items-end mb-6">
               <span className="font-label-caps text-[12px] text-on-surface-variant">
                 SUBTOTAL
               </span>
@@ -132,15 +138,19 @@ export function CartSidebar() {
                 {formatKsh(parseFloat(cart.cost.subtotalAmount.amount))}
               </span>
             </div>
-            <p className="text-[12px] text-on-surface-variant mb-10 font-sans leading-relaxed">
-              Shipping and taxes calculated at checkout. Curated in Nairobi, shipped worldwide.
-            </p>
+
+            <CartTrustRow />
+
             <a
               href={cart.checkoutUrl}
               className="block w-full h-16 bg-primary-container text-on-primary-container flex items-center justify-center font-sans uppercase tracking-[0.1em] text-[14px] font-medium active:scale-[0.98] transition-transform duration-200"
             >
-              Checkout
+              Checkout with M-Pesa · {formatKsh(parseFloat(cart.cost.subtotalAmount.amount))}
             </a>
+
+            <p className="font-label-caps text-[10px] text-on-surface-variant/70 text-center mt-4 leading-[1.5]">
+              Free exchanges in Nairobi · 7-day return countrywide
+            </p>
           </footer>
         )}
       </div>

@@ -19,6 +19,9 @@ export default function SizeGuidePage() {
           Our sizing is based on your measurements, not standard labels. Measure
           your hips first — that is your anchor.
         </p>
+        <p className="font-label-caps text-[11px] text-on-surface-variant/80 mt-6">
+          Fits true to size · Free exchanges in Nairobi · 7-day return countrywide
+        </p>
       </header>
 
       <section className="mb-section-gap">
@@ -86,9 +89,57 @@ export default function SizeGuidePage() {
             </tbody>
           </table>
         </div>
-        <div className="mt-12 text-center">
+        <div className="mt-16 max-w-3xl mx-auto">
+          <h3 className="font-label-caps text-on-surface-variant tracking-widest text-center mb-6">
+            If you usually wear…
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-on-surface">
+              <thead>
+                <tr className="border-b border-outline-variant/40">
+                  <th className="py-3 px-4 text-left font-label-caps text-[11px] text-on-surface-variant">
+                    FORMA
+                  </th>
+                  <th className="py-3 px-4 text-left font-label-caps text-[11px] text-on-surface-variant">
+                    UK / KE Ready-to-Wear
+                  </th>
+                  <th className="py-3 px-4 text-left font-label-caps text-[11px] text-on-surface-variant">
+                    US
+                  </th>
+                  <th className="py-3 px-4 text-left font-label-caps text-[11px] text-on-surface-variant">
+                    EU
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="font-sans text-[14px]">
+                {[
+                  { f: "S", uk: "8 – 10", us: "4 – 6", eu: "36 – 38" },
+                  { f: "M", uk: "12 – 14", us: "8 – 10", eu: "40 – 42" },
+                  { f: "L", uk: "16", us: "12", eu: "44" },
+                  { f: "XL", uk: "18 – 20", us: "14 – 16", eu: "46 – 48" },
+                  { f: "XXL", uk: "22", us: "18", eu: "50" },
+                  { f: "2XL", uk: "24+", us: "20+", eu: "52+" },
+                ].map((row) => (
+                  <tr key={row.f} className="border-b border-outline-variant/20">
+                    <td className="py-3 px-4 font-bold">{row.f}</td>
+                    <td className="py-3 px-4">{row.uk}</td>
+                    <td className="py-3 px-4">{row.us}</td>
+                    <td className="py-3 px-4">{row.eu}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="font-sans text-[12px] text-on-surface-variant/70 mt-4 leading-[1.6]">
+            A guide, not a guarantee — brands vary. Use the cm chart above for the closest fit.
+          </p>
+        </div>
+
+        <div className="mt-16 text-center">
           <a
-            href="https://wa.me/254700000000"
+            href="https://wa.me/254795023213?text=Hi%20FORMA%2C%20I%27d%20like%20help%20choosing%20a%20size."
+            target="_blank"
+            rel="noopener noreferrer"
             className="font-sans text-[14px] uppercase tracking-[0.05em] text-primary inline-flex items-center justify-center gap-2 hover:opacity-80 transition-opacity"
           >
             Still unsure? WhatsApp us directly →

@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ColorSelector } from "@/components/pdp/color-selector";
 import { SizeSelector } from "@/components/pdp/size-selector";
 import { SignatureGallery } from "@/components/pdp/gallery";
 import { TrustBadges } from "@/components/pdp/trust-badges";
+import { PdpTrustStrip } from "@/components/pdp/trust-strip";
+import { MobileStickyAtc } from "@/components/pdp/mobile-sticky-atc";
 import { formatKsh } from "@/lib/format";
 import type { Product } from "@/lib/commerce";
 import { useCart } from "@/components/cart/cart-context";
@@ -14,7 +16,8 @@ import { useCart } from "@/components/cart/cart-context";
 export function SignaturePdp({ product }: { product: Product }) {
   const { detail } = product;
   const { addItem, isPending } = useCart();
-  
+  const ctaRef = useRef<HTMLButtonElement>(null);
+
   // Basic selection state
   const [selectedSize, setSelectedSize] = useState(detail.sizes[0]);
   const [selectedShade, setSelectedShade] = useState(product.shades[0]);
@@ -84,16 +87,26 @@ export function SignaturePdp({ product }: { product: Product }) {
 
             {detail.sizes.length > 0 && (
               <div className="flex flex-col gap-stack-md">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center flex-wrap gap-2">
                   <span className="font-label-caps text-on-surface-variant">
                     SIZE
                   </span>
-                  <Link
-                    href="/size-guide"
-                    className="font-label-caps text-on-surface-variant underline underline-offset-4 hover:text-primary transition-colors"
-                  >
-                    See the size guide
-                  </Link>
+                  <div className="flex items-center gap-4">
+                    <Link
+                      href="/size-guide"
+                      className="font-label-caps text-on-surface-variant underline underline-offset-4 hover:text-primary transition-colors"
+                    >
+                      See the size guide
+                    </Link>
+                    <a
+                      href={`https://wa.me/254795023213?text=${encodeURIComponent(`Hi FORMA, I'd like help choosing a size for the ${product.name}.`)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-label-caps text-primary underline underline-offset-4 hover:opacity-80 transition-opacity"
+                    >
+                      Ask on WhatsApp
+                    </a>
+                  </div>
                 </div>
                 <SizeSelector
                   sizes={detail.sizes}
@@ -101,11 +114,16 @@ export function SignaturePdp({ product }: { product: Product }) {
                   onSizeChange={setSelectedSize}
                   style="signature"
                 />
+                <p className="font-label-caps text-[10px] text-on-surface-variant/80 leading-[1.5]">
+                  Fits true to size. If between sizes, size up for comfort.
+                  <span className="block mt-1">Restocks monthly.</span>
+                </p>
               </div>
             )}
 
             <div className="flex flex-col gap-stack-md pt-4">
-              <button 
+              <button
+                ref={ctaRef}
                 onClick={handleAddToCart}
                 disabled={isPending || !product.inStock}
                 className="w-full h-16 bg-primary-container text-on-primary-container font-sans uppercase tracking-[0.1em] text-[14px] font-medium active:scale-[0.98] transition-transform duration-200 disabled:opacity-50"
@@ -117,10 +135,27 @@ export function SignaturePdp({ product }: { product: Product }) {
               </button>
             </div>
 
+            <PdpTrustStrip />
+
+            <p className="font-label-caps text-[10px] text-on-surface-variant text-center -mt-2">
+              Free exchanges in Nairobi · 7-day return countrywide
+            </p>
+
             <TrustBadges />
           </div>
         </div>
       </section>
+
+      <MobileStickyAtc
+        targetRef={ctaRef}
+        productName={product.name}
+        price={product.price}
+        selectedSize={selectedSize}
+        inStock={product.inStock}
+        isPending={isPending}
+        onAdd={handleAddToCart}
+        ctaLabel="Add to Cart"
+      />
 
       {detail.narrativeHeadline && (
         <section className="bg-surface-container-low py-section-gap">

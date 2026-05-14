@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/brand/logo";
 
 const columns = [
   {
@@ -35,9 +36,9 @@ export function Footer() {
     <footer className="w-full px-margin-mobile md:px-margin-desktop py-section-gap bg-surface-container border-t border-outline-variant">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-section-gap max-w-[var(--container-max)] mx-auto">
         <div className="md:col-span-4 mb-stack-lg md:mb-0">
-          <span className="font-display italic text-[40px] leading-none text-on-background block mb-stack-md">
-            FORMA
-          </span>
+          <Link href="/" aria-label="FORMA — Home" className="inline-block mb-stack-md">
+            <Logo variant="full" size="lg" hoverRedraw />
+          </Link>
           <p className="font-sans text-[16px] leading-[1.6] text-on-surface-variant max-w-xs">
             Redefining confidence through intentional design and the warmth of
             Nairobi heritage.
