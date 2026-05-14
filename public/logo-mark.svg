@@ -1,0 +1,11 @@
+<svg viewBox="0 0 44 110" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>FORMA icon mark</title>
+  <desc>FORMA S-curve icon mark in terracotta. Standalone mark for favicon, app icon, and small-scale use.</desc>
+
+  <path
+    d="M 22 8 C 40 26, 4 42, 22 55 C 4 68, 40 84, 22 102"
+    fill="none"
+    stroke="#ffb693"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+</svg>

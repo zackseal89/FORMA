@@ -1,0 +1,40 @@
+<svg viewBox="0 0 248 115" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>FORMA logo — light</title>
+  <desc>FORMA wordmark with terracotta S-curve mark and NAIROBI label. For use on light/cream surfaces.</desc>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400&amp;family=DM+Sans:wght@600&amp;display=swap');
+    </style>
+  </defs>
+
+  <!-- S-curve mark: primaryContainer terracotta for light bg -->
+  <path
+    d="M 22 8 C 40 26, 4 42, 22 55 C 4 68, 40 84, 22 102"
+    fill="none"
+    stroke="#dc743e"
+    stroke-width="1.8"
+    stroke-linecap="round"/>
+
+  <!-- Hairline separator -->
+  <line x1="42" y1="28" x2="42" y2="82" stroke="#131312" stroke-width="0.5" stroke-opacity="0.08"/>
+
+  <!-- FORMA wordmark -->
+  <text
+    x="54"
+    y="73"
+    font-family="'EB Garamond', Georgia, 'Times New Roman', serif"
+    font-size="48"
+    font-weight="400"
+    letter-spacing="5"
+    fill="#131312">FORMA</text>
+
+  <!-- NAIROBI label: labelCaps -->
+  <text
+    x="56"
+    y="92"
+    font-family="'DM Sans', system-ui, Helvetica, sans-serif"
+    font-size="10"
+    font-weight="600"
+    letter-spacing="1"
+    fill="#56433a">NAIROBI</text>
+</svg>

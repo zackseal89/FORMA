@@ -188,3 +188,66 @@ body {
 .hairline {
   border-color: color-mix(in oklab, var(--color-on-surface) 8%, transparent);
 }
+
+/* ------------------------------------------------------------------ */
+/*  FORMA logo — "inscribe" animation                                  */
+/*  The S-curve mark draws itself; the wordmark fades in after.        */
+/*  Path length of the cubic S-curve ~= 290px; dasharray rounded up.   */
+/* ------------------------------------------------------------------ */
+
+@keyframes forma-inscribe {
+  from {
+    stroke-dashoffset: 320;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes forma-reveal {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.logo-mark-path {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 0;
+}
+
+[data-logo-animate="true"] .logo-mark-path {
+  animation: forma-inscribe 1.6s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+[data-logo-animate="true"] .logo-wordmark,
+[data-logo-animate="true"] .logo-sublabel {
+  opacity: 0;
+  animation: forma-reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.9s forwards;
+}
+
+[data-logo-animate="true"] .logo-sublabel {
+  animation-delay: 1.15s;
+}
+
+/* On hover, the curve re-inscribes — used in the header brandmark. */
+.logo-hover-redraw:hover .logo-mark-path {
+  animation: forma-inscribe 1.4s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+/* Respect users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  [data-logo-animate="true"] .logo-mark-path,
+  [data-logo-animate="true"] .logo-wordmark,
+  [data-logo-animate="true"] .logo-sublabel,
+  .logo-hover-redraw:hover .logo-mark-path {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    stroke-dashoffset: 0;
+  }
+}
